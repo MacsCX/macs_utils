@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module utils</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>utils</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/mszczepek/Repo/MacsCX/macs_utils/utils.py">/Users/mszczepek/Repo/MacsCX/macs_utils/utils.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;useful&nbsp;methods.&nbsp;Enjoy!</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="calendar.html">calendar</a><br>
+<a href="datetime.html">datetime</a><br>
+</td><td width="25%" valign=top><a href="json.html">json</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-change_char"><strong>change_char</strong></a>(string:str, char_index:int, new_char:str)</dt></dl>
+ <dl><dt><a name="-create_subarray"><strong>create_subarray</strong></a>(array, can_be_empty)</dt></dl>
+ <dl><dt><a name="-datetime_to_string"><strong>datetime_to_string</strong></a>(given_datetime:&lt;module 'datetime' from '/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/datetime.py'&gt;, day_name_length:int)</dt></dl>
+ <dl><dt><a name="-datetime_to_unixtimestamp"><strong>datetime_to_unixtimestamp</strong></a>(given_datetime)</dt></dl>
+ <dl><dt><a name="-datify_elements"><strong>datify_elements</strong></a>(array:list, start_date_key:str, end_date_key:str, date_range_key:str, should_insert_to_name:bool, name_key:str, delete_chars_from_name:int=-9, start_x_days_before:int=30, interval_hours=6, is_first_element_multidate:bool=True)</dt></dl>
+ <dl><dt><a name="-is_csv_correct"><strong>is_csv_correct</strong></a>(csv_array:list)</dt><dd><tt>Check&nbsp;if&nbsp;CSV's&nbsp;lines&nbsp;has&nbsp;the&nbsp;same&nbsp;number&nbsp;of&nbsp;columns<br>
+:param&nbsp;csv_array:&nbsp;CSV&nbsp;parsed&nbsp;to&nbsp;an&nbsp;array<br>
+:return:&nbsp;Boolean</tt></dd></dl>
+ <dl><dt><a name="-make_array_from_dict_values"><strong>make_array_from_dict_values</strong></a>(dictionary:dict, key:str)</dt></dl>
+ <dl><dt><a name="-make_arrays_element_dominating"><strong>make_arrays_element_dominating</strong></a>(array:list, element_index:int, number_of_clones:int)</dt></dl>
+ <dl><dt><a name="-print_array"><strong>print_array</strong></a>(array:list)</dt></dl>
+ <dl><dt><a name="-read_csv_as_array"><strong>read_csv_as_array</strong></a>(csv_file_path:str, start_index:int=0, delimiter:str='\t')</dt><dd><tt>:param&nbsp;csv_file_path:&nbsp;<br>
+:param&nbsp;start_index:&nbsp;<br>
+:param&nbsp;delimiter:&nbsp;<br>
+:return:&nbsp;CSV&nbsp;parsed&nbsp;to&nbsp;an&nbsp;array</tt></dd></dl>
+ <dl><dt><a name="-read_json_file"><strong>read_json_file</strong></a>(json_file_path:str)</dt><dd><tt>:param&nbsp;json_file_path:<br>
+:return:&nbsp;JSON&nbsp;file&nbsp;content&nbsp;parsed&nbsp;to&nbsp;dict</tt></dd></dl>
+ <dl><dt><a name="-remove_spaces_from_string"><strong>remove_spaces_from_string</strong></a>(string:str)</dt></dl>
+ <dl><dt><a name="-remove_special_chars_from_string"><strong>remove_special_chars_from_string</strong></a>(string:str)</dt></dl>
+ <dl><dt><a name="-replace_polish_chars_with_ascii"><strong>replace_polish_chars_with_ascii</strong></a>(string:str)</dt></dl>
+ <dl><dt><a name="-round_datetime_to_minutes"><strong>round_datetime_to_minutes</strong></a>(given_datetime, min_to_round:int=15)</dt></dl>
+ <dl><dt><a name="-round_unixtimestamp_to_minutes"><strong>round_unixtimestamp_to_minutes</strong></a>(unix_timestamp, min_to_round:int=15)</dt></dl>
+ <dl><dt><a name="-save_json_to_file"><strong>save_json_to_file</strong></a>(dictionary:dict, file_path:str)</dt><dd><tt>:param&nbsp;dictionary:<br>
+:param&nbsp;file_path:</tt></dd></dl>
+ <dl><dt><a name="-true_or_false"><strong>true_or_false</strong></a>()</dt></dl>
+ <dl><dt><a name="-unixtimestamp_to_datetime"><strong>unixtimestamp_to_datetime</strong></a>(unix_timestamp)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>polish_chars</strong> = {'ó': 'o', 'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ś': 's', 'ź': 'z', 'ż': 'z'}</td></tr></table>
+</body></html>
