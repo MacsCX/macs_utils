@@ -22,7 +22,7 @@ polish_chars = {"ą": "a",
 
 #### CSV
 
-def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str = "\t"):
+def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str = "\t", has_one_column: bool = False):
     """
     :param csv_file_path: 
     :param start_index: 
@@ -34,7 +34,10 @@ def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str =
     with open(csv_file_path) as file:
         for line in file:
             line = line.rstrip("\n")
-            line = line.split(delimiter)  # line is transformed into array
+            if has_one_column:
+                line = line[0]
+            else:
+                line = line.split(delimiter)  # line is transformed into array
             parsed_data.append(line)
 
     return parsed_data[start_index:]
@@ -86,10 +89,16 @@ def datetime_to_unixtimestamp(given_datetime: datetime):
     return int(time.mktime(given_datetime.timetuple()))
 
 
-def round_unixtimestamp_to_minutes(unix_timestamp, min_to_round: int = 15):
-    modulo = unix_timestamp % (min_to_round * 60)
-    if modulo >= (min_to_round * 60 / 2):
-        unix_timestamp += min_to_round * 60 - modulo
+def round_unixtimestamp(unix_timestamp: int, rounding_accuracy_mins: int = 0):
+    """
+    Round given unix timestamp
+    :param unix_timestamp:
+    :param rounding_accuracy_mins:
+    :return:
+    """
+    modulo = unix_timestamp % (rounding_accuracy_mins * 60)
+    if modulo >= (rounding_accuracy_mins * 60 / 2):
+        unix_timestamp += rounding_accuracy_mins * 60 - modulo
     else:
         unix_timestamp -= modulo
 
@@ -98,7 +107,7 @@ def round_unixtimestamp_to_minutes(unix_timestamp, min_to_round: int = 15):
 
 def round_datetime_to_minutes(given_datetime, min_to_round: int = 15):
     unix_dt = datetime_to_unixtimestamp(given_datetime)
-    rounded_unix_dt = round_unixtimestamp_to_minutes(unix_dt, min_to_round)
+    rounded_unix_dt = round_unixtimestamp(unix_dt, min_to_round)
 
     return unixtimestamp_to_datetime(rounded_unix_dt)
 
@@ -179,38 +188,58 @@ def remove_special_chars_from_string(string: str):
 
 
 def remove_spaces_from_string(string: str):
-    string = list(string)
-    result = []
+    """
+    Remove spaces, tabs and "\n" from string
+    :param string:
+    :return:
+    """
 
-    for character in string:
-        if character == " " or character == "\t":
-            continue
-        result.append(character)
-
-    return "".join(result)
+    return "".join(string.split())
 
 
 #### OTHER
 
-def true_or_false():
-    return random.choice([True, False])
+def true_or_false(true_weight: int = 1, false_weight: int = 1):
+    """
+    Draw a boolen with various degrees of probability
+    :param true_weight:
+    :param false_weight:
+    :return: True or False
+    """
+    return random.choice([True] * true_weight + [False] * false_weight)
 
 
-def create_subarray(array, can_be_empty):
+def create_random_subarray(array: list, exact_length: int = 0, min_length: int = 0, max_length: int = 0):
+    """
+    Create subarray
+    :param array: 1-D array
+    :param exact_length: for subarray with exact length
+    :param min_length:
+    :param max_length:
+    :return: 1-D subarray
+    """
     subarray = []
+    array_copy = array.copy()
 
-    for element in array:
-        if true_or_false():
-            subarray.append(element)
+    if exact_length == 0:
 
-    if can_be_empty == False and len(subarray) == 0:
-        subarray.append(random.choice(array))
+        if max_length == 0:
+            max_length = len(array)
+
+        exact_length = randint(min_length, max_length)
+
+    elif exact_length > len(array):
+        raise ValueError("Exact subarray's length is bigger than provided array's length")
+
+    for counter in range(exact_length):
+        subarray.append(
+            array_copy.pop(randint(0, len(array_copy) - 1))
+        )
+
     return subarray
 
 
-def make_arrays_element_dominating(array: list, element_index: int,
-                                   number_of_clones: int):  # it clones element multiple times to change ratio in array
-
+def make_arrays_element_dominating(array: list, element_index: int, number_of_clones: int):
     new_array = array.copy()
 
     for i in range(0, number_of_clones):
