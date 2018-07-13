@@ -5,7 +5,7 @@ import json
 import os
 import random
 from random import randint
-import datetime
+from datetime import datetime
 import time
 import calendar
 
@@ -80,36 +80,47 @@ def save_json_to_file(dictionary: dict, file_path: str):
 
 
 #### DATES
-def datetime_to_unixtimestamp(given_datetime: datetime):
-    """
-    Convert datetime object to unix timestamp
-    :param given_datetime: datetime object
-    :return: unix timestamp
-    """
-    return int(time.mktime(given_datetime.timetuple()))
+
+# TO DELETE
+# def datetime_to_unixtimestamp(given_datetime: datetime):
+#     """
+#     Convert datetime object to unix timestamp
+#     :param given_datetime: datetime object
+#     :return: unix timestamp
+#     """
+#     return int(time.mktime(given_datetime.timetuple()))
 
 
-def round_unixtimestamp(unix_timestamp: int, rounding_accuracy_mins: int = 0):
+def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int = 0, accuracy_hours: int = 0):
     """
-    Round given unix timestamp
-    :param unix_timestamp:
-    :param rounding_accuracy_mins:
+    Round unixtimestamp with given accuracy
+    :param unixtimestamp: type - float or integer
+    :param accuracy_min:
+    :param accuracy_hours:
+    :param accuracy_sec:
     :return:
     """
-    modulo = unix_timestamp % (rounding_accuracy_mins * 60)
-    if modulo >= (rounding_accuracy_mins * 60 / 2):
-        unix_timestamp += rounding_accuracy_mins * 60 - modulo
+
+    accuracy = accuracy_hours * 3600 + accuracy_min * 60 + accuracy_sec
+
+    if (isinstance(unixtimestamp, float) and isinstance(unixtimestamp, float)) == False:
+        raise TypeError("Provided timestamp is not integer or float!")
+
+    modulo = unixtimestamp % accuracy
+    if modulo >= (accuracy / 2):
+        unixtimestamp += accuracy - modulo
     else:
-        unix_timestamp -= modulo
+        unixtimestamp -= modulo
 
-    return unix_timestamp
+    return unixtimestamp
 
+## TO FINISH
+def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min: int = 0, accuracy_hours: int = 0):
+    unixtimestamp = given_datetime.timestamp()
+    return given_datetime.fromtimestamp(
+        round_unixtimestamp(unixtimestamp, accuracy_sec, accuracy_min, accuracy_hours)
+    )
 
-def round_datetime_to_minutes(given_datetime, min_to_round: int = 15):
-    unix_dt = datetime_to_unixtimestamp(given_datetime)
-    rounded_unix_dt = round_unixtimestamp(unix_dt, min_to_round)
-
-    return unixtimestamp_to_datetime(rounded_unix_dt)
 
 
 def datetime_to_string(given_datetime: datetime, day_name_length: int):
