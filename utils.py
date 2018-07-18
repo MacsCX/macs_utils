@@ -215,25 +215,3 @@ def create_random_subarray(array: list, exact_length: int = 0, min_length: int =
         )
 
     return subarray
-
-
-def make_arrays_element_dominating(array: list, element_index: int, number_of_clones: int):
-    new_array = array.copy()
-
-    for i in range(0, number_of_clones):
-        new_array.append(array[element_index])
-
-    return new_array
-
-
-def make_array_from_dict_values(dictionary: dict, key: str):
-    array = []
-    for element in dictionary:
-        array.append(element[key])
-
-    return array
-
-
-def print_array(array: list):
-    for element in array:
-        print(str(element))
