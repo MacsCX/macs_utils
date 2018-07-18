@@ -114,53 +114,20 @@ def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int 
 
     return unixtimestamp
 
-## TO FINISH
+
 def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min: int = 0, accuracy_hours: int = 0):
+    """
+    Round datetime object with given accuracy
+    :param given_datetime: datetime object (datetime module)
+    :param accuracy_sec:
+    :param accuracy_min:
+    :param accuracy_hours:
+    :return:
+    """
     unixtimestamp = given_datetime.timestamp()
     return given_datetime.fromtimestamp(
         round_unixtimestamp(unixtimestamp, accuracy_sec, accuracy_min, accuracy_hours)
     )
-
-
-
-def datetime_to_string(given_datetime: datetime, day_name_length: int):
-    day_name = calendar.day_name[given_datetime.weekday()][0:day_name_length]
-    return "{} {}".format(day_name,
-                          str(given_datetime)[:22])
-
-
-def unixtimestamp_to_datetime(unix_timestamp):
-    return datetime.datetime.fromtimestamp(int(unix_timestamp))
-
-
-def datify_elements(array: list, start_date_key: str, end_date_key: str, date_range_key: str,
-                    should_insert_to_name: bool, name_key: str, delete_chars_from_name: int = -9,
-                    start_x_days_before: int = 30, interval_hours=6, is_first_element_multidate: bool = True):
-    dt = datetime.datetime.now() - datetime.timedelta(days=start_x_days_before)
-    dt -= datetime.timedelta(hours=6)
-    dt = round_datetime_to_minutes(dt, 15)
-    for element in array:
-
-        start_date = datetime_to_unixtimestamp(dt)
-        end_date = start_date + random.randint(1, 12) * 900  # 900 = 15 min
-
-        if array.index(element) == 0 and is_first_element_multidate:
-            end_date = end_date + 172800  # first element will be multidate
-
-        if date_range_key == "":
-            element[start_date_key] = start_date
-            element[end_date_key] = end_date
-        else:
-            element[date_range_key][start_date_key] = start_date
-            element[date_range_key][end_date_key] = end_date
-
-        if should_insert_to_name:
-            element[name_key] = datetime_to_string(dt, 3)[:delete_chars_from_name] + " " + element[name_key]
-
-        dt = dt + datetime.timedelta(hours=interval_hours)
-
-    return array
-
 
 #### STRINGS
 
