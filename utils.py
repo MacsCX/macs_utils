@@ -6,8 +6,6 @@ import os
 import random
 from random import randint
 from datetime import datetime
-import time
-import calendar
 
 polish_chars = {"ą": "a",
                 "ć": "c",
@@ -26,7 +24,8 @@ def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str =
     """
     :param csv_file_path: 
     :param start_index: 
-    :param delimiter: 
+    :param delimiter:
+    :param has_one_column:
     :return: CSV parsed to an array 
     """
     csv_file_path = os.path.abspath(csv_file_path)
@@ -34,9 +33,7 @@ def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str =
     with open(csv_file_path) as file:
         for line in file:
             line = line.rstrip("\n")
-            if has_one_column:
-                line = line[0]
-            else:
+            if not has_one_column:
                 line = line.split(delimiter)  # line is transformed into array
             parsed_data.append(line)
 
@@ -131,14 +128,28 @@ def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min
 
 #### STRINGS
 
-def change_char(string: str, char_index: int, new_char: str):
+def replace_char(string: str, char_index: int, new_char: str):
+    """
+    Replace chars in string
+    :rtype: object
+    :param string:
+    :param char_index:
+    :param new_char:
+    :return:
+    """
     string = list(string)
     string[char_index] = new_char
 
     return "".join(string)
 
 
-def replace_polish_chars_with_ascii(string: str):
+def normalize_polish_chars(string: str):
+    """
+    Change polish chars to ASCII chars
+    unicode.normalize doesn't work well, because of "Ł" and "ł" ;)
+    :param string:
+    :return:
+    """
     string = list(string)
     result = []
 
@@ -153,7 +164,12 @@ def replace_polish_chars_with_ascii(string: str):
     return "".join(result)
 
 
-def remove_special_chars_from_string(string: str):
+def remove_special_chars(string: str):
+    """
+    Remove special chars from string
+    :param string:
+    :return:
+    """
     string = list(string)
     result = []
 
@@ -165,7 +181,7 @@ def remove_special_chars_from_string(string: str):
     return "".join(result)
 
 
-def remove_spaces_from_string(string: str):
+def remove_spaces(string: str):
     """
     Remove spaces, tabs and "\n" from string
     :param string:
@@ -215,3 +231,13 @@ def create_random_subarray(array: list, exact_length: int = 0, min_length: int =
         )
 
     return subarray
+
+def get_dir_abs_path(file_name: str):
+    """
+    Return absolute path to file's directory
+    :param file_name:
+    :return:
+    """
+    return os.path.abspath(os.path.dirname(file_name))
+
+abs_path = lambda x : os.path.abspath(x)
