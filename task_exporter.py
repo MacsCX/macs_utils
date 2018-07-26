@@ -1,17 +1,25 @@
-import utils, sys
+import utils, sys, requests
 
-projects = [(2, "Timesheets"), (12312, "Wirtualna Mennica"), (5234234, "CBInsights")]
+projects = [(24, "Wirtualna Mennica"), (2, "Timesheets"), (27, "CBInsights")]
+url = "https://timesheets-api.quidlo.com/api/v1/miq/users/63/tasks"
+token = "82de432e7fc22bf806fec914726a35281dd27e554c30eecc37db22d9d466e0f5"
+headers = dict(authorization="Bearer %s" % token)
+user_id = 63
 
 parsed_csv = utils.read_csv_as_array("czerwiec.txt", 0, "	")
 filtered_csv = []
 total_duration_hours = 0
 
+
 def reformat_date(date):
     date = date.split("/")
+    if len(date[0]) == 1:
+        date[0] = "0" + date[0]
     reformatted_date = "{}-{}-{}".format(date[2],
                                          date[1],
                                          date[0])
     return reformatted_date
+
 
 for row in parsed_csv:
     if (len(row) > 1) and (len(row) < len(projects) * 2):
@@ -50,9 +58,17 @@ for row in filtered_csv:
 
         task = dict(projectId=project[0],
                     projectName=project[1],
-                    date=date,
+                    userId=user_id,
+                    date=reformat_date(date),
+                    title=description,
                     duration=duration_hours,
-                    description=description)
+                    durationMins=int(duration_hours * 60),
+                    tagIds=["g-5"])
+
+        if "tsh" in sys.argv:
+            req = requests.post(url=url, json=task, headers=headers)
+            print("{} {} {}".format(date, req.status_code, task["projectId"]))
+
         result_report.append(task)
 
         if "wiesiek" in sys.argv:
