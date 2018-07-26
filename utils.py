@@ -4,6 +4,7 @@ This module contains useful methods. Enjoy!
 import json
 import os
 import random
+import re
 from random import randint
 from datetime import datetime
 
@@ -125,6 +126,17 @@ def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min
     return given_datetime.fromtimestamp(
         round_unixtimestamp(unixtimestamp, accuracy_sec, accuracy_min, accuracy_hours)
     )
+
+def from_iso8601_to_datetime(date: str):
+    pattern = r"[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\+[0-9][0-9]\:[0-9][0-9]"
+    if re.match(pattern, date):
+        date = [int(x) for x in re.split("\-|T|\+|\:", date)]
+        date[3] += date[6]
+        date[4] += date[7]
+        dt_date = datetime(*date[:6])
+        return dt_date
+    else:
+        raise ValueError("Provided string does not match ISO 8601 pattern")
 
 #### STRINGS
 
