@@ -19,6 +19,28 @@ polish_chars = {"ą": "a",
                 "ź": "z"}
 
 
+#### OBJECTS
+
+def get_attributes(ob: object, *args) -> tuple:
+    '''
+    return attributes' values as a tuple
+    :param ob: object
+    :param args: attributes' names as strings
+    :return:
+    '''
+    return tuple(getattr(ob, attribute) for attribute in args)
+
+
+def get_key_values(dictionary: dict, *args):
+    '''
+    return key values as a tuple
+    :param dictionary:
+    :param args: keys' names as strings
+    :return:
+    '''
+    return tuple(dictionary[key] for key in args)
+
+
 #### CSV
 
 def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str = "\t", has_one_column: bool = False):
@@ -127,6 +149,7 @@ def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min
         round_unixtimestamp(unixtimestamp, accuracy_sec, accuracy_min, accuracy_hours)
     )
 
+
 def from_iso8601_to_datetime(date: str):
     pattern = r"[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\+[0-9][0-9]\:[0-9][0-9]"
     if re.match(pattern, date):
@@ -137,6 +160,7 @@ def from_iso8601_to_datetime(date: str):
         return dt_date
     else:
         raise ValueError("Provided string does not match ISO 8601 pattern")
+
 
 #### STRINGS
 
@@ -244,6 +268,7 @@ def create_random_subarray(array: list, exact_length: int = 0, min_length: int =
 
     return subarray
 
+
 def get_dir_abs_path(file_name: str):
     """
     Return absolute path to file's directory
@@ -252,4 +277,5 @@ def get_dir_abs_path(file_name: str):
     """
     return os.path.abspath(os.path.dirname(file_name))
 
-abs_path = lambda x : os.path.abspath(x)
+
+abs_path = lambda x: os.path.abspath(x)
