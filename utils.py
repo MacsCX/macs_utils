@@ -218,6 +218,18 @@ def remove_spaces(string: str):
 
     return "".join(string.split())
 
+def simplify_string(string: str):
+    '''
+    Simplify string by removing spaces, special chars and normalizing polish chars
+    :param string:
+    :return:
+    '''
+    return remove_spaces(
+        remove_special_chars(
+            normalize_polish_chars(string)
+        )
+    )
+
 
 #### OTHER
 
