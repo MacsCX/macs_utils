@@ -99,18 +99,6 @@ def save_json_to_file(dictionary: dict, file_path: str):
         json.dump(dictionary, file, indent=2)
 
 
-#### DATES
-
-# TO DELETE
-# def datetime_to_unixtimestamp(given_datetime: datetime):
-#     """
-#     Convert datetime object to unix timestamp
-#     :param given_datetime: datetime object
-#     :return: unix timestamp
-#     """
-#     return int(time.mktime(given_datetime.timetuple()))
-
-
 def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int = 0, accuracy_hours: int = 0):
     """
     Round unixtimestamp with given accuracy
@@ -150,16 +138,20 @@ def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min
     )
 
 
-def from_iso8601_to_datetime(date: str):
-    pattern = r"[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\+[0-9][0-9]\:[0-9][0-9]"
-    if re.match(pattern, date):
-        date = [int(x) for x in re.split("\-|T|\+|\:", date)]
-        date[3] += date[6]
-        date[4] += date[7]
-        dt_date = datetime(*date[:6])
-        return dt_date
-    else:
-        raise ValueError("Provided string does not match ISO 8601 pattern")
+def from_iso8601_to_datetime(dt: str):
+    # pattern = r"[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\+[0-9][0-9]\:[0-9][0-9]"
+    # if re.match(pattern, date):
+    #     date = [int(x) for x in re.split("\-|T|\+|\:", date)]
+    #     date[3] += date[6]
+    #     date[4] += date[7]
+    #     dt_date = datetime(*date[:6])
+    #     return dt_date
+    # else:
+    #     raise ValueError("Provided string does not match ISO 8601 pattern")
+    return datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z")
+
+def from_datetime_to_iso8601(dt: datetime):
+    return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
 
 #### STRINGS
