@@ -52,11 +52,14 @@ class Person():
     @classmethod
     # TODO test and finish
     def pl_random(cls, is_male: bool = True):
-        if is_male:
-            name = random.choice(mock.pl_male_names)
-            surname = random.choice(mock.pl_surnames)
-        else:
-            name = random.choice(mock.pl_female_names)
-            surname = create_pl_female_surname()
+        # if is_male:
+        #     name = random.choice(mock.pl_male_names)
+        #     surname = random.choice(mock.pl_surnames)
+        # else:
+        #     name = random.choice(mock.pl_female_names)
+        #     surname = create_pl_female_surname()
 
+        name = random.choice(mock.pl_male_names) if is_male else random.choice(mock.pl_female_names)
+        surname = random.choice(mock.pl_surnames) if is_male else create_pl_female_surname()
         return Person(name, surname)
+
