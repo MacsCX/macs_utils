@@ -111,8 +111,8 @@ def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int 
 
     accuracy = accuracy_hours * 3600 + accuracy_min * 60 + accuracy_sec
 
-    if (isinstance(unixtimestamp, float) and isinstance(unixtimestamp, float)) == False:
-        raise TypeError("Provided timestamp is not integer or float!")
+    if (isinstance(unixtimestamp, float) and isinstance(unixtimestamp, int)) == False:
+        raise TypeError("Provided timestamp is not integer/float!")
 
     modulo = unixtimestamp % accuracy
     if modulo >= (accuracy / 2):
@@ -149,6 +149,7 @@ def from_iso8601_to_datetime(dt: str):
     # else:
     #     raise ValueError("Provided string does not match ISO 8601 pattern")
     return datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z")
+
 
 def from_datetime_to_iso8601(dt: datetime):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
@@ -218,12 +219,13 @@ def remove_spaces(string: str):
 
     return "".join(string.split())
 
+
 def simplify_string(string: str):
-    '''
+    """
     Simplify string by removing spaces, special chars and normalizing polish chars
     :param string:
     :return:
-    '''
+    """
     return remove_spaces(
         remove_special_chars(
             normalize_polish_chars(string)
@@ -280,6 +282,3 @@ def get_dir_abs_path(file_name: str):
     :return:
     """
     return os.path.abspath(os.path.dirname(file_name))
-
-
-abs_path = lambda x: os.path.abspath(x)
