@@ -41,7 +41,17 @@ def get_key_values(dictionary: dict, *args):
     return tuple(dictionary[key] for key in args)
 
 
-#### CSV
+def is_array(obj: object):
+    """check if object type is list, tuple or set"""
+    return type(obj) is list or type(obj) is set or type(obj) is tuple
+
+
+def is_number(obj: object):
+    """check if object type is integer or float"""
+    return type(obj) is int or type(obj) is float
+
+
+#### CSV and TXT
 
 def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str = "\t", has_one_column: bool = False):
     """
@@ -74,6 +84,30 @@ def is_csv_correct(csv_array: list):
             return False
 
     return True
+
+
+def save_to_csv(content: object, output_path: str, delimiter: str = "", write_mode: str = "w"):
+    """
+    Save content to csv/txt file
+    :param content: string or any type of array. Array's elements will be saved in separate lines.
+    :param output_path:
+    :param delimiter:
+    :param write_mode: "w" - write, "a" - append
+    :return:
+    """
+    all_content_to_write = ""
+    if is_array(content):
+        for element in content:
+            if is_array(element):
+                element = [str(x) for x in element]  # convert array's elements to strings
+                all_content_to_write += delimiter.join(element) + "\n"
+            else:
+                all_content_to_write += str(element)
+    else:
+        all_content_to_write = str(content)
+
+    with open(output_path, write_mode) as file:
+        file.write(all_content_to_write)
 
 
 #### JSON
@@ -111,7 +145,7 @@ def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int 
 
     accuracy = accuracy_hours * 3600 + accuracy_min * 60 + accuracy_sec
 
-    if (isinstance(unixtimestamp, float) and isinstance(unixtimestamp, int)) == False:
+    if not is_number(unixtimestamp):
         raise TypeError("Provided timestamp is not integer/float!")
 
     modulo = unixtimestamp % accuracy
@@ -139,15 +173,6 @@ def round_datetime(given_datetime: datetime, accuracy_sec: int = 0, accuracy_min
 
 
 def from_iso8601_to_datetime(dt: str):
-    # pattern = r"[0-9][0-9][0-9][0-9]\-[0-9][0-9]\-[0-9][0-9]T[0-9][0-9]\:[0-9][0-9]\:[0-9][0-9]\+[0-9][0-9]\:[0-9][0-9]"
-    # if re.match(pattern, date):
-    #     date = [int(x) for x in re.split("\-|T|\+|\:", date)]
-    #     date[3] += date[6]
-    #     date[4] += date[7]
-    #     dt_date = datetime(*date[:6])
-    #     return dt_date
-    # else:
-    #     raise ValueError("Provided string does not match ISO 8601 pattern")
     return datetime.datetime.strptime(dt, "%Y-%m-%dT%H:%M:%S.%f%z")
 
 
