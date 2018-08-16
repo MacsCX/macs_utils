@@ -77,7 +77,7 @@ def get_adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     :param file_format: jpg/png/gif
     :return:
     """
-    return "https://api.adorable.io/avatars/%d/%d.%s" % (size, randint(1, 100000), file_format)
+    return "https://api.adorable.io/avatars/{0}/{1}.{2}".format(size, randint(1, 100000), file_format)
 
 
 def get_robohash_avatar_url(width: int = 200, height: int = 200):
@@ -87,7 +87,7 @@ def get_robohash_avatar_url(width: int = 200, height: int = 200):
     :param height: px
     :return:
     """
-    return "https://robohash.org/%d.png?size%dx%d" % (randint(1, 100000), width, height)
+    return "https://robohash.org/{0}.png?size{1}x{2}".format(randint(1, 100000), width, height)
 
 
 def get_avatar_url(size: int = 200):
@@ -100,3 +100,20 @@ def get_avatar_url(size: int = 200):
                           get_robohash_avatar_url(size, size),
                           "https://invalid.url.cs",
                           ""])
+
+
+def get_dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg"):
+    """
+    Get url to simple rectangular image
+    :param width: px
+    :param height: px
+    :param file_format: jpg/png/git/bmp
+    :return:
+    """
+    font_color = "".join([hex(randint(0, 255))[2:] for _ in range(3)])
+    background_color = "".join([hex(randint(0, 255))[2:] for _ in range(3)])
+    return "https://dummyimage.com/{0}x{1}.{2}/{3}/{4}".format(width,
+                                                               height,
+                                                               file_format,
+                                                               font_color,
+                                                               background_color)
