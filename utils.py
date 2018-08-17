@@ -53,17 +53,26 @@ def is_number(obj: object):
 
 #### CSV and TXT
 
-def read_csv_as_array(csv_file_path: str, start_index: int = 0, delimiter: str = "\t", has_one_column: bool = False):
+def read_txt_as_string(file_path: str, split_lines: bool = True):
+    result_string = ""
+    with open(file_path) as file:
+        for line in file:
+            line = line if split_lines else " ".join(line.split("\n"))
+            result_string += line
+    return result_string
+
+
+def read_csv_as_array(file_path: str, start_index: int = 0, delimiter: str = "\t", has_one_column: bool = False):
     """
-    :param csv_file_path: 
+    :param file_path:
     :param start_index: 
     :param delimiter:
     :param has_one_column:
     :return: CSV parsed to an array 
     """
-    csv_file_path = os.path.abspath(csv_file_path)
+    file_path = os.path.abspath(file_path)
     parsed_data = []
-    with open(csv_file_path) as file:
+    with open(file_path) as file:
         for line in file:
             line = line.rstrip("\n")
             if not has_one_column:
@@ -112,26 +121,28 @@ def save_to_csv(content: object, output_path: str, delimiter: str = "", write_mo
 
 #### JSON
 
-def read_json_file(json_file_path: str):
+def read_json_file(file_path: str):
     """
-    :param json_file_path:
+    :param file_path:
     :return: JSON file content parsed to dict
     """
-    with open(json_file_path) as file:
+    with open(file_path) as file:
         json_dict = json.load(file)
 
     return json_dict
 
 
-def save_json_to_file(dictionary: dict, file_path: str):
+def save_to_json(dictionary: dict, output_path: str):
     """
     Save dictionary to JSON file
     :param dictionary:
-    :param file_path:
+    :param output_path:
     """
-    with open(file_path, "w") as file:
+    with open(output_path, "w") as file:
         json.dump(dictionary, file, indent=2)
 
+
+#### DATES & TIME
 
 def round_unixtimestamp(unixtimestamp, accuracy_sec: int = 0, accuracy_min: int = 0, accuracy_hours: int = 0):
     """
