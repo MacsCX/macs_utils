@@ -4,21 +4,24 @@ import os
 import random
 from random import randint
 
-mock_data_path = os.path.join(u.get_dir_abs_path(__file__), "mock_data")
+_mock_data_path = os.path.join(u.get_dir_abs_path(__file__), "mock_data")
 
 
-def read_mock_txt(file_name: str) -> list:
-    return u.read_csv_as_array(os.path.join(mock_data_path, file_name), has_one_column=True)
+def _read_mock_txt(file_name: str) -> list:
+    return u.read_csv_as_array(os.path.join(_mock_data_path, file_name), has_one_column=True)
 
 
-en_color_names = read_mock_txt("EN-color_names.txt")
-en_animals = read_mock_txt("EN-animals.txt")
-pl_male_names = read_mock_txt("PL-male_names.txt")
-pl_female_names = read_mock_txt("PL-female_names.txt")
-pl_surnames = read_mock_txt("PL-surnames.txt")
-pl_car_plate_codes = read_mock_txt("PL-car_plate_codes.txt")
-domains = read_mock_txt("domains.txt")
-tech_terms = read_mock_txt("tech_terms.txt")
+# In directory mock_data/long_strings you may find long strings, for example "Lorem ipsum"
+# or vehicle's description from Wiki
+
+en_color_names = _read_mock_txt("EN-color_names.txt")
+en_animals = _read_mock_txt("EN-animals.txt")
+pl_male_names = _read_mock_txt("PL-male_names.txt")
+pl_female_names = _read_mock_txt("PL-female_names.txt")
+pl_surnames = _read_mock_txt("PL-surnames.txt")
+pl_car_plate_codes = _read_mock_txt("PL-car_plate_codes.txt")
+domains = _read_mock_txt("domains.txt")
+tech_terms = _read_mock_txt("tech_terms.txt")
 
 names = pl_male_names + pl_female_names
 surnames = pl_surnames
@@ -117,3 +120,26 @@ def get_dummy_image_url(width: int = 200, height: int = 200, file_format: str = 
                                                                file_format,
                                                                font_color,
                                                                background_color)
+
+
+def long_string(*args):
+    """
+    Return long string, (Lorem ipsum or other)
+    :param args: file name (without '.txt'),
+    :return:
+    """
+    # available_options = ["random", "one_line"]
+    strings_dir_path = _mock_data_path + "/long_strings"
+    available_string_names = [file_name.split(".")[0] for file_name in os.listdir(strings_dir_path)]
+
+    string_name = random.choice(available_string_names)
+
+    for x in args:
+        if x in available_string_names:
+            string_name = x
+            break
+
+    string_file_path = "{0}/{1}.txt".format(strings_dir_path, string_name)
+    string = u.read_txt_as_string(string_file_path, split_lines=not ("one_line" in args))
+
+    return string
