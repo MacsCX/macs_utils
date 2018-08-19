@@ -39,8 +39,8 @@ company_name_suffixes = ["Solutions", "LTD", "Labs", "Inc.", "Company", "Sp. z o
                          "Dynamics", "Partners", "Holdings", "Development"]
 
 
-def create_email(name: str = None, surname: str = None,
-                 domain: str = None):
+def email(name: str = None, surname: str = None,
+          domain: str = None):
     """
     Create email using name and surname. If data is empty, random pseudo will be used.
     :param name:
@@ -62,13 +62,13 @@ def create_email(name: str = None, surname: str = None,
     return "{0}.{1}@{2}".format(name, surname, domain)
 
 
-def create_business_name():
+def business_name():
     """create random business name using technical terms """
 
     return "%s %s" % (random.choice(tech_terms), random.choice(company_name_suffixes))
 
 
-def create_pl_car_plate():
+def pl_car_plate():
     """create random PL car plate, for example KRA 99ABC"""
 
     car_plate_code = random.choice(pl_car_plate_codes)
@@ -82,7 +82,7 @@ def create_pl_car_plate():
                                         )
 
 
-def get_adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
+def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     """
     Get url of Adorable avatar (square random funny face)
     :param size: size in px
@@ -92,7 +92,7 @@ def get_adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     return "https://api.adorable.io/avatars/{0}/{1}.{2}".format(size, randint(1, 100000), file_format)
 
 
-def get_robohash_avatar_url(width: int = 200, height: int = 200):
+def robohash_avatar_url(width: int = 200, height: int = 200):
     """
     Get url of Robohash PNG-only avatar (funny robot with alpha channel)
     :param width: px
@@ -102,19 +102,19 @@ def get_robohash_avatar_url(width: int = 200, height: int = 200):
     return "https://robohash.org/{0}.png?size{1}x{2}".format(randint(1, 100000), width, height)
 
 
-def get_avatar_url(size: int = 200):
+def avatar_url(size: int = 200):
     """
     Return proper, improper or empty image url
     :param size: px
     :return:
     """
-    return random.choice([get_adorable_avatar_url(size),
-                          get_robohash_avatar_url(size, size),
+    return random.choice([adorable_avatar_url(size),
+                          robohash_avatar_url(size, size),
                           "https://invalid.url.cs",
                           ""])
 
 
-def get_dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg"):
+def dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg"):
     """
     Get url to simple rectangular image
     :param width: px
