@@ -1,5 +1,4 @@
 import utils as u
-from person import Person
 import os
 import random
 from random import randint
@@ -151,3 +150,4 @@ def long_string(*args):
         string = " ".join(string.split("\n"))
 
     return string
+
