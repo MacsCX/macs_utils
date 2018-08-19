@@ -5,6 +5,15 @@ import random
 from random import randint
 
 _mock_data_path = os.path.join(u.get_dir_abs_path(__file__), "mock_data")
+_strings_dir_path = os.path.join(_mock_data_path, "long_strings")
+_string_names = [file_name.split(".")[0] for file_name in os.listdir(_strings_dir_path)]
+
+# reading long strings from TXT files ("mock_data/long_strings/")
+
+_long_strings = {}
+
+for string_name in _string_names:
+    _long_strings[string_name] = u.read_txt_as_string("{0}/{1}.txt".format(_strings_dir_path, string_name))
 
 
 def _read_mock_txt(file_name: str) -> list:
@@ -128,18 +137,17 @@ def long_string(*args):
     :param args: file name (without '.txt'),
     :return:
     """
-    # available_options = ["random", "one_line"]
-    strings_dir_path = _mock_data_path + "/long_strings"
-    available_string_names = [file_name.split(".")[0] for file_name in os.listdir(strings_dir_path)]
 
-    string_name = random.choice(available_string_names)
+    string_name = random.choice(_string_names)
 
     for x in args:
-        if x in available_string_names:
+        if x in _string_names:
             string_name = x
             break
 
-    string_file_path = "{0}/{1}.txt".format(strings_dir_path, string_name)
-    string = u.read_txt_as_string(string_file_path, split_lines=not ("one_line" in args))
+    string = _long_strings[string_name]
+
+    if "one_line" in args:
+        string = " ".join(string.split("\n"))
 
     return string
