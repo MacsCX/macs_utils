@@ -4,29 +4,39 @@ import random
 # TODO oddzielna metoda na wczytanie pliku (walidacja, czy to jest JSON)
 # TODO oddzielna metoda do parsowania obiektu
 
-example = {
-        "$repeat": 5,
-        "name": "random.choice(pl_male_names)",
-        "surname": "random.choice(pl_surnames)",
-        "avatar": "avatar_url()"
-    }
+example = [{"$repeat": 5},
+{
+    "id": "counter",
+    "name": "random.choice(pl_male_names)",
+    "surname": "random.choice(pl_surnames)",
+    "avatar": "avatar_url()"
+}]
 
+print(isinstance(example, list))
 # example = "$Uszanowanko!\n Hehe"
 
-example = [{"$repeat": 1}, "random.choice(pl_surnames)"]
+example2 = [{"$repeat": 1}, "random.choice(pl_surnames)"]
 
-def _parse_element(element):
+# class looper():
+#     def __init__(self, repeat: int, counter: int = 0):
+#         self.repeat = repeat,
+#         self.counter = counter
+
+
+
+
+def _parse_element(element, counter: int = 666):
+
     if isinstance(element, str):
         if element[0] == "$":
             # TODO implementacja obsługi modeli np. $my_model
             result = "This is a model example, TO DO!"
+        # elif element == "counter":
+        #     result = counter
         else:
             try:
                 result = eval(element)
-            # TODO jak to kurde zrobić do jednego excepta? :P
-            except NameError:
-                result = element
-            except SyntaxError:
+            except (NameError, SyntaxError) as e:
                 result = element
 
     elif isinstance(element, list):
@@ -34,18 +44,21 @@ def _parse_element(element):
         try:
             if isinstance(element[0], dict) and "$repeat" in element[0].keys():
                 repeat = element[0]["$repeat"] - 1
+
                 element.remove(element[0])
                 for _ in range(repeat):
-                    result += _parse_element(element)
+                    result += _parse_element(element, counter)
+                    counter += 1
+
         except IndexError:
             result = []
 
         for x in element:
-            result.append(_parse_element(x))
+            result.append(_parse_element(x, counter))
+            counter += 1
 
     elif isinstance(element, dict):
         repeat = element.pop("$repeat") - 1 if "$repeat" in element.keys() else None
-
         if repeat is None:
             result = {}
             for key in element.keys():
@@ -53,8 +66,8 @@ def _parse_element(element):
         else:
             result = []
             for _ in range(repeat):
-                result.append(_parse_element(element))
-
+                result.append(_parse_element(element, counter))
+                counter += 1
     elif u.is_number(element):
         result = element
 
@@ -63,35 +76,8 @@ def _parse_element(element):
 
     return result
 
+
 print(_parse_element(example))
 
 
-# def _parse_dict_pattern(pattern: dict):
-#     result = {}
-#     for key in pattern.keys():
-#         if pattern[key] is str:
-#             try:
-#                 result[key] = eval(pattern[key])
-#             except NameError:
-#                 result[key] = pattern[key]
-#
-#         elif pattern[key] is dict:
-#             result[key] = _parse_dict_pattern(pattern[key])
-#
-#         else:
-#             result[key] = pattern[key]
-#
-#     return result
-#
-#
-# def _parse_json_object(obj: object):
-#     pattern = obj[0] if obj is list else obj
-#
-#     if pattern is not dict:
-#         raise TypeError("Provided value cannot be read as JSON!")
-#
-#     can_be_repeated = True if obj is list else False
-#     repeat = pattern.pop("$repeat") if "$repeat" in pattern.keys() else None
-#
-#     if repeat is None and can_be_repeated:
-#         raise ValueError("No '$repeat' property")
+
