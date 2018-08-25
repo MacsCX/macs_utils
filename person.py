@@ -42,6 +42,14 @@ class Person():
     def __str__(self):
         return repr(self)
 
+    @property
+    def email(self):
+        return mock.email(self.name, self.surname)
+
+    @property # same as __repr__
+    def full_name(self):
+        return "%s %s" % (self.name, self.surname)
+
     @classmethod
     # TODO test
     # TODO make other userful locals
@@ -51,13 +59,8 @@ class Person():
 
     @classmethod
     # TODO test and finish
-    def pl_random(cls, is_male: bool = True):
-        # if is_male:
-        #     name = random.choice(mock.pl_male_names)
-        #     surname = random.choice(mock.pl_surnames)
-        # else:
-        #     name = random.choice(mock.pl_female_names)
-        #     surname = create_pl_female_surname()
+    def pl_random(cls, is_male: bool = None):
+        is_male = is_male or true_or_false()
 
         name = random.choice(mock.pl_male_names) if is_male else random.choice(mock.pl_female_names)
         surname = random.choice(mock.pl_surnames) if is_male else create_pl_female_surname()
