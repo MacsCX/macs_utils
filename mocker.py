@@ -1,22 +1,24 @@
 from mock import *
 import random
+from person import Person
 
 # TODO oddzielna metoda na wczytanie pliku (walidacja, czy to jest JSON)
 # TODO oddzielna metoda do parsowania obiektu
 
-example = [{"$repeat": 6},
+example = [{"$repeat": 5},
            {
                "id": "counter",
-               "name": "random.choice(pl_male_names)",
-               "surname": "random.choice(pl_surnames)",
+               "name": "person.name",
+               "surname": "person.surname",
+               "email": "person.email",
                "avatar": "avatar_url()",
-               "weird": [{"$repeat": 12}, "counter"]
+               "weird": [{"$repeat": 12}, "15"]
            }]
 
 print(isinstance(example, list))
 # example = "$Uszanowanko!\n Hehe"
 
-example2 = [{"$repeat": 1}, "random.choice(pl_surnames)"]
+example2 = [{"$repeat": 1}, "person.name", "person.surname", "person.email"]
 example3 = [{"$repeat": 12}, "counter"]
 
 
@@ -26,52 +28,48 @@ example3 = [{"$repeat": 12}, "counter"]
 #         self.counter = counter
 
 
-def _parse_element(element, counter: int = 666):
+def _parse_element(element, counter: int = 0, person: Person = None):
     start_counter = counter
+    person = person or Person.pl_random()
+
+    #### string
     if isinstance(element, str):
         if element[0] == "$":
             # TODO implementacja obsługi modeli np. $my_model
             result = "This is a model example, TO DO!"
-        # elif element == "counter":
-        #     result = counter
         else:
             try:
                 result = eval(element)
             except (NameError, SyntaxError) as e:
                 result = element
 
+    #### list
     elif isinstance(element, list):
         result = []
         try:
+            # if $repeat is present
             if isinstance(element[0], dict) and "$repeat" in element[0].keys():
-                repeat = element[0]["$repeat"] - 1
+                repeat = element[0]["$repeat"]
+                counter = start_counter
 
                 for _ in range(repeat):
-                    result.append(_parse_element(element[1:], counter))
-                    counter += 1
+                    result += _parse_element(element[1:])
 
+            else:
+                for x in element:
+                    result.append(x, counter)
         except IndexError:
             result = []
 
-        for x in element:
-            if isinstance(x, dict) and "$repeat" in x.keys():
-                continue
 
-            result.append(_parse_element(x, counter))
-            # counter += 1
-
+    #### dictionary
     elif isinstance(element, dict):
-        repeat = element.pop("$repeat") - 1 if "$repeat" in element.keys() else None
-        if repeat is None:
-            result = {}
-            for key in element.keys():
-                result[key] = _parse_element(element[key], counter)
-        else:
-            result = []
-            for _ in range(repeat):
-                result.append(_parse_element(element, counter))
-                counter += 1
 
+        result = {}
+        for key in element.keys():
+            result[key] = _parse_element(element[key], counter, person)
+
+    #### integer or float
     elif u.is_number(element):
         result = element
 
@@ -81,4 +79,4 @@ def _parse_element(element, counter: int = 666):
     return result
 
 
-print(_parse_element(example))
+print(_parse_element(example2))
