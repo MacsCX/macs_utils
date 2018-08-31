@@ -7,7 +7,7 @@ setup(
     version="0.1dev",
     packages=["macs_utils"],
     license="beerware",
-    long_description=open("README.txt").read(),
+    long_description=open("README.md").read(),
 
     package_data={"": ["mock_data/*", "mock_data/long_strings/*"]}
 )
