@@ -11,6 +11,7 @@ _string_names = [file_name.split(".")[0] for file_name in os.listdir(_strings_di
 
 _long_strings = {}
 
+# In directory mock_data/long_strings you may find long strings f.e. "Lorem ipsum", etc.
 for string_name in _string_names:
     _long_strings[string_name] = u.read_txt_as_string("{0}/{1}.txt".format(_strings_dir_path, string_name))
 
@@ -19,15 +20,13 @@ def _read_mock_txt(file_name: str) -> list:
     return u.read_csv_as_array(os.path.join(_mock_data_path, file_name), has_one_column=True)
 
 
-# In directory mock_data/long_strings you may find long strings, for example "Lorem ipsum"
-# or vehicle's description from Wiki
-
 en_color_names = _read_mock_txt("EN-color_names.txt")
 en_animals = _read_mock_txt("EN-animals.txt")
 pl_male_names = _read_mock_txt("PL-male_names.txt")
 pl_female_names = _read_mock_txt("PL-female_names.txt")
 pl_surnames = _read_mock_txt("PL-surnames.txt")
 pl_car_plate_codes = _read_mock_txt("PL-car_plate_codes.txt")
+pl_cities = _read_mock_txt("PL-cities.txt")
 domains = _read_mock_txt("domains.txt")
 tech_terms = _read_mock_txt("tech_terms.txt")
 
@@ -150,4 +149,3 @@ def long_string(*args):
         string = " ".join(string.split("\n"))
 
     return string
-
