@@ -78,7 +78,14 @@ def pl_car_plate():
                                         chr(randint(65, 90)),
                                         chr(randint(65, 90))
                                         )
+def nickname():
+    # TODO finish!
+    """create random nickname using EN colors and animal names"""
+    color = random.choice(en_color_names)
+    animal = random.choice(en_animals)
 
+    if u.true_or_false():
+        return f"{color}"
 
 def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     """
@@ -129,7 +136,7 @@ def dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg
                                                                background_color)
 
 
-def long_string(*args):
+def long_string(args: object) -> str:
     """
     Return long string, (Lorem ipsum or other)
     :param args: file name (without '.txt'),
