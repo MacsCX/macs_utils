@@ -2,6 +2,7 @@ from macs_utils import mock
 from macs_utils.person import Person
 from macs_utils import utils as u
 from datetime import datetime, timedelta
+import random
 
 
 def find_setting(obj: object, setting: str):
@@ -38,8 +39,9 @@ def period_length_setting(obj: object):
     return time_delta
 
 
-def _parse_element(element, counter: int = 0, person: Person = None, start_date: datetime = None,
+def _parse_element(element, counter: int = 12, person: Person = None, start_date: datetime = None,
                    time_delta: timedelta = None, period_length: timedelta = None):
+    # TODO kwargs
     start_counter = counter
     person = person or Person.pl_random()
     start_date = start_date or u.round_datetime(datetime.now(), accuracy_hours=1)
@@ -54,7 +56,8 @@ def _parse_element(element, counter: int = 0, person: Person = None, start_date:
         if element[0] == "$" and element != "$repeat":
 
             if element[-5:] == ".json":
-                result = _parse_element(u.read_json_file(element[1:]))
+                result = _parse_element(u.read_json_file(element[1:]), counter=counter, start_date=start_date, time_delta=time_delta,
+                                       period_length=period_length)
 
             else:
                 try:
@@ -70,25 +73,23 @@ def _parse_element(element, counter: int = 0, person: Person = None, start_date:
         result = []
 
         try:
-            counter = start_counter
 
             repeat = find_setting(element, "$repeat")
             start_date = find_setting(element, "$start_date") or start_date
             time_delta = time_delta_setting(element) or time_delta
             period_length = period_length_setting(element) or period_length
+
             if repeat is not None:
-
                 for _ in range(repeat):
-                    for subelement in element:
-                        result.append(
-                            _parse_element(subelement, counter=counter, start_date=start_date, time_delta=time_delta,
-                                           period_length=period_length))
-                        counter += 1
-                        start_date += time_delta
-
+                    result += [
+                        _parse_element(element, counter=counter, start_date=start_date, time_delta=time_delta,
+                                       period_length=period_length)]
+                    counter += 1
+                    start_date += time_delta
             else:
                 for x in element:
-                    result.append(_parse_element(x))
+                    result.append(_parse_element(x, counter=counter, start_date=start_date, time_delta=time_delta,
+                                                 period_length=period_length))
                     counter += 1
 
         except IndexError:
@@ -100,6 +101,7 @@ def _parse_element(element, counter: int = 0, person: Person = None, start_date:
 
         result = {}
         for key in element.keys():
+            print(counter)
             result[key] = _parse_element(element[key], person=person, counter=counter, start_date=start_date,
                                          time_delta=time_delta,
                                          period_length=period_length)
@@ -112,11 +114,11 @@ def _parse_element(element, counter: int = 0, person: Person = None, start_date:
         result = None
 
     if not u.is_number(result) and not u.is_array(result) and not isinstance(result, str) and not isinstance(result,
-                                                                                                             dict):
+                                                                                                             dict) and not isinstance(
+        result, bool):
         result = str(result)
 
     return result
-
 
 # test1 = [
 #     {"$repeat": 5},
