@@ -5,52 +5,48 @@ from datetime import datetime, timedelta
 import random
 
 
-def find_setting(obj: object, setting: str):
-    # setting template - {"setting_name": "setting_value"}
+# TODO make some method provider
+# TODO make __main__
 
-    if isinstance(obj, list):
+
+def find_setting(obj: object, setting: str, *args):
+    # setting template - {"setting_name": "setting_value"}
+    result = None
+
+    if "timedelta" in args:
+        catched_value = find_setting(obj, setting)  # for example: 'hours=12' as string
+        if catched_value is None:
+            result = None
+        else:
+            time_delta = eval(f"timedelta({catched_value})")
+            result = time_delta
+
+    elif isinstance(obj, list):
         for element in obj:
             if isinstance(element, dict) and setting in element.keys():
                 obj.remove(element)
-                return element[setting]
+                result = element[setting]
+                break
 
     elif isinstance(obj, dict):
         if setting in obj.keys():
-            return obj[setting]
+            result = obj[setting]
 
-    else:
-        return None
-
-
-def time_delta_setting(obj: object):
-    # TODO make one method instead 2 (this and period_length_setting)
-    catched_value = find_setting(obj, "$time_delta")  # for example: 'hours=12' as string
-    if catched_value is None:
-        return None
-    time_delta = eval(f"timedelta({catched_value})")
-    return time_delta
+    return result
 
 
-def period_length_setting(obj: object):
-    catched_value = find_setting(obj, "$period_length")  # for example: 'hours=12' as string
-    if catched_value is None:
-        return None
-    time_delta = eval(f"timedelta({catched_value})")
-    return time_delta
-
-
-def _parse_element(element, counter: int = 12, person: Person = None, start_date: datetime = None,
+def _parse_element(element, counter: int = 0, start_date: datetime = None,
                    time_delta: timedelta = None, period_length: timedelta = None):
-    # TODO kwargs
-
-
-    start_counter = counter
-    person = person or Person.pl_random()
     start_date = start_date or u.round_datetime(datetime.now(), accuracy_hours=1)
     time_delta = time_delta or timedelta(hours=24)
     period_length = period_length or timedelta(hours=1)
 
+    params = dict(locals().copy())
+    del params["element"]
+
+    start_counter = counter
     end_date = start_date + period_length
+    person = Person.pl_random()
 
     #### string
     if isinstance(element, str):
@@ -58,8 +54,7 @@ def _parse_element(element, counter: int = 12, person: Person = None, start_date
         if element[0] == "$" and element != "$repeat":
 
             if element[-5:] == ".json":
-                result = _parse_element(u.read_json_file(element[1:]), counter=counter, start_date=start_date, time_delta=time_delta,
-                                       period_length=period_length)
+                result = _parse_element(u.read_json_file(element[1:]), **params)
 
             else:
                 try:
@@ -78,21 +73,27 @@ def _parse_element(element, counter: int = 12, person: Person = None, start_date
 
             repeat = find_setting(element, "$repeat")
             start_date = find_setting(element, "$start_date") or start_date
-            time_delta = time_delta_setting(element) or time_delta
-            period_length = period_length_setting(element) or period_length
+            time_delta = find_setting(element, "$time_delta", "timedelta") or time_delta
+            period_length = find_setting(element, "$period_length", "timedelta") or period_length
 
             if repeat is not None:
-                for _ in range(repeat):
-                    result += [
-                        _parse_element(element, counter=counter, start_date=start_date, time_delta=time_delta,
-                                       period_length=period_length)]
-                    counter += 1
-                    start_date += time_delta
+                if isinstance(repeat, str):  # if $repeat is presented as tuple, f.e.: {"$repeat":"(1, 5)"}
+                    repeat = eval(repeat)
+                    mock_range = range(random.randint(*repeat))
+                else:
+                    mock_range = range(repeat)
+
+                params_copy = params.copy()
+
+                for _ in mock_range:
+                    result += _parse_element(element, **params_copy)
+                    params_copy["counter"] += 1
+                    params_copy["start_date"] += time_delta
             else:
+                params_copy = params.copy()
                 for x in element:
-                    result.append(_parse_element(x, counter=counter, start_date=start_date, time_delta=time_delta,
-                                                 period_length=period_length))
-                    counter += 1
+                    result.append(_parse_element(x, **params_copy))
+                    params_copy["counter"] += 1
 
         except IndexError:
             result = []
@@ -103,44 +104,39 @@ def _parse_element(element, counter: int = 12, person: Person = None, start_date
 
         result = {}
         for key in element.keys():
-            print(counter)
-            result[key] = _parse_element(element[key], person=person, counter=counter, start_date=start_date,
-                                         time_delta=time_delta,
-                                         period_length=period_length)
+            result[key] = _parse_element(element[key], **params)
 
-    #### integer or float
-    elif u.is_number(element):
+    #### integer or float or boolean
+    elif u.is_number(element) or isinstance(element, bool):
         result = element
 
     else:
-        result = None
-
-    if not u.is_number(result) and not u.is_array(result) and not isinstance(result, str) and not isinstance(result,
-                                                                                                             dict) and not isinstance(
-        result, bool):
-        result = str(result)
+        result = str(element)
 
     return result
 
 # test1 = [
-#     {"$repeat": 5},
+#     {"$repeat": "(1, 10)"},
 #     {"$time_delta": "hours=12"},
 #     {
+#
 #         "name": "$person.name",
 #         "surname": "$person.surname",
 #         "dateRange":
-#             {"date": "$start_date",
-#              "end_date": "$end_date"}
+#             {"date": "$str(start_date)",
+#              "end_date": "$str(end_date)"}
 #     }
 # ]
 #
-# test2 = [
-#     {"$repeat": 5},
-#     {"$time_delta": "hours=12"},
-#     "$start_date"
-# ]
-#
+# # # test2 = [
+# # #     {"$repeat": 5},
+# # #     # {"$time_delta": "hours=12"},
+# # #     1, 123
+# # # ]
+# #
 # test_result = _parse_element(test1)
-# print(test_result)
 #
+# print(test_result)
+# print(len(test_result))
+# #
 # u.save_to_json(test_result, "test.json")
