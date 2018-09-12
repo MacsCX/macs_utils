@@ -138,8 +138,8 @@ def save_to_json(dictionary: dict, output_path: str):
     :param dictionary:
     :param output_path:
     """
-    with open(output_path, "w") as file:
-        json.dump(dictionary, file, indent=2)
+    with open(output_path, "w", encoding="utf-8") as file:
+        json.dump(dictionary, file, indent=2, ensure_ascii=False)
 
 
 #### DATES & TIME
