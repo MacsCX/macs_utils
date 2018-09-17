@@ -3,18 +3,24 @@ from macs_utils.person import Person
 from macs_utils import utils as u
 from datetime import datetime, timedelta
 import random
-
+import argparse
 
 # TODO make some method provider
-# TODO make __main__
 
-
-def find_setting(obj: object, setting: str, *args):
+def _find_setting(obj: object, setting: str, *args):
+    '''
+    internal method for finding special settings like:
+    repeat, time_delta, start_date, period_length
+    :param obj:
+    :param setting:
+    :param args:
+    :return:
+    '''
     # setting template - {"setting_name": "setting_value"}
     result = None
 
     if "timedelta" in args:
-        catched_value = find_setting(obj, setting)  # for example: 'hours=12' as string
+        catched_value = _find_setting(obj, setting)  # for example: 'hours=12' as string
         if catched_value is None:
             result = None
         else:
@@ -35,13 +41,23 @@ def find_setting(obj: object, setting: str, *args):
     return result
 
 
-def _parse_element(element, counter: int = 0, start_date: datetime = None,
-                   time_delta: timedelta = None, period_length: timedelta = None):
+def mock_element(element, counter: int = 0, start_date: datetime = None,
+                 time_delta: timedelta = None, period_length: timedelta = None):
+    '''
+    Mock element
+    :param element: string, dictionary, array or JSON file
+    :param counter: counter's baseline value
+    :param start_date: start date of events' sequence
+    :param time_delta: interval between events' start dates
+    :param period_length: event's length; parameters
+    :return:
+    '''
+
     start_date = start_date or u.round_datetime(datetime.now(), accuracy_hours=1)
     time_delta = time_delta or timedelta(hours=24)
     period_length = period_length or timedelta(hours=1)
 
-    params = dict(locals().copy())
+    params = dict(locals().copy()) # this line copies keeps parameters
     del params["element"]
 
     start_counter = counter
@@ -53,8 +69,8 @@ def _parse_element(element, counter: int = 0, start_date: datetime = None,
 
         if element[0] == "$" and element != "$repeat":
 
-            if element[-5:] == ".json":
-                result = _parse_element(u.read_json_file(element[1:]), **params)
+            if element[-5:] == ".json": # that's for mocking models from JSON files
+                result = mock_element(u.read_json_file(element[1:]), **params)
 
             else:
                 try:
@@ -71,10 +87,10 @@ def _parse_element(element, counter: int = 0, start_date: datetime = None,
 
         try:
 
-            repeat = find_setting(element, "$repeat")
-            start_date = find_setting(element, "$start_date") or start_date
-            time_delta = find_setting(element, "$time_delta", "timedelta") or time_delta
-            period_length = find_setting(element, "$period_length", "timedelta") or period_length
+            repeat = _find_setting(element, "$repeat")
+            start_date = _find_setting(element, "$start_date") or start_date
+            time_delta = _find_setting(element, "$time_delta", "timedelta") or time_delta
+            period_length = _find_setting(element, "$period_length", "timedelta") or period_length
 
             if repeat is not None:
                 if isinstance(repeat, str):  # if $repeat is presented as tuple, f.e.: {"$repeat":"(1, 5)"}
@@ -86,13 +102,13 @@ def _parse_element(element, counter: int = 0, start_date: datetime = None,
                 params_copy = params.copy()
 
                 for _ in mock_range:
-                    result += _parse_element(element, **params_copy)
+                    result += mock_element(element, **params_copy)
                     params_copy["counter"] += 1
                     params_copy["start_date"] += time_delta
             else:
                 params_copy = params.copy()
                 for x in element:
-                    result.append(_parse_element(x, **params_copy))
+                    result.append(mock_element(x, **params_copy))
                     params_copy["counter"] += 1
 
         except IndexError:
@@ -104,10 +120,10 @@ def _parse_element(element, counter: int = 0, start_date: datetime = None,
 
         result = {}
         for key in element.keys():
-            result[key] = _parse_element(element[key], **params)
+            result[key] = mock_element(element[key], **params)
 
-    #### integer or float or boolean
-    elif u.is_number(element) or isinstance(element, bool):
+    #### integer or float or boolean or None
+    elif u.is_number(element) or isinstance(element, bool) or element is None:
         result = element
 
     else:
@@ -115,28 +131,18 @@ def _parse_element(element, counter: int = 0, start_date: datetime = None,
 
     return result
 
-# test1 = [
-#     {"$repeat": "(1, 10)"},
-#     {"$time_delta": "hours=12"},
-#     {
-#
-#         "name": "$person.name",
-#         "surname": "$person.surname",
-#         "dateRange":
-#             {"date": "$str(start_date)",
-#              "end_date": "$str(end_date)"}
-#     }
-# ]
-#
-# # # test2 = [
-# # #     {"$repeat": 5},
-# # #     # {"$time_delta": "hours=12"},
-# # #     1, 123
-# # # ]
-# #
-# test_result = _parse_element(test1)
-#
-# print(test_result)
-# print(len(test_result))
-# #
-# u.save_to_json(test_result, "test.json")
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("model_path", help="path to model file")
+    parser.add_argument("output_path", help="path to output file")
+    parser.add_argument("--counter", "-c", action="store", type=int, help="counter's baseline value")
+
+    args = parser.parse_args()
+    counter = args.counter or 0
+    model_path = args.model_path
+    output_path = args.output_path
+
+    model = u.read_json_file(model_path)
+
+    u.save_to_json(mock_element(model, counter=counter), output_path)
