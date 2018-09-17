@@ -122,8 +122,8 @@ def mock_element(element, counter: int = 0, start_date: datetime = None,
         for key in element.keys():
             result[key] = mock_element(element[key], **params)
 
-    #### integer or float or boolean
-    elif u.is_number(element) or isinstance(element, bool):
+    #### integer or float or boolean or None
+    elif u.is_number(element) or isinstance(element, bool) or element is None:
         result = element
 
     else:
