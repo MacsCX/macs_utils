@@ -79,13 +79,14 @@ def pl_car_plate():
                                         chr(randint(65, 90))
                                         )
 def nickname():
-    # TODO finish!
     """create random nickname using EN colors and animal names"""
     color = random.choice(en_color_names)
     animal = random.choice(en_animals)
 
     if u.true_or_false():
-        return f"{color}"
+        return f"{color.capitalize()}{animal.capitalize()}{randint(0,100)}"
+    else:
+        return f"{color}_{animal}{randint(0,100)}"
 
 def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     """
