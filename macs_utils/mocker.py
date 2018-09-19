@@ -42,7 +42,7 @@ def _find_setting(obj: object, setting: str, *args):
 
 
 def mock_element(element, counter: int = 0, start_date: datetime = None,
-                 time_delta: timedelta = None, period_length: timedelta = None):
+                 time_delta: timedelta = None, period_length: timedelta = None, person: Person = None):
     '''
     Mock element
     :param element: string, dictionary, array or JSON file
@@ -53,24 +53,28 @@ def mock_element(element, counter: int = 0, start_date: datetime = None,
     :return:
     '''
 
-    start_date = start_date or u.round_datetime(datetime.now(), accuracy_hours=1)
+    person = person or Person.pl_random()
+    start_date = start_date or u.round_datetime(datetime.now(), accuracy_min=15)
     time_delta = time_delta or timedelta(hours=24)
     period_length = period_length or timedelta(hours=1)
+
 
     params = dict(locals().copy()) # this line copies keeps parameters
     del params["element"]
 
     start_counter = counter
     end_date = start_date + period_length
-    person = Person.pl_random()
+
 
     #### string
     if isinstance(element, str):
+        params_copy = params.copy()
 
         if element[0] == "$" and element != "$repeat":
 
             if element[-5:] == ".json": # that's for mocking models from JSON files
-                result = mock_element(u.read_json_file(element[1:]), **params)
+                result = mock_element(u.read_json_file(element[1:]), **params_copy)
+
 
             else:
                 try:
@@ -105,11 +109,13 @@ def mock_element(element, counter: int = 0, start_date: datetime = None,
                     result += mock_element(element, **params_copy)
                     params_copy["counter"] += 1
                     params_copy["start_date"] += time_delta
+                    params_copy["person"] = Person.pl_random()
             else:
                 params_copy = params.copy()
                 for x in element:
                     result.append(mock_element(x, **params_copy))
                     params_copy["counter"] += 1
+                    # params_copy["person"] = Person.pl_random()
 
         except IndexError:
             result = []
@@ -117,10 +123,10 @@ def mock_element(element, counter: int = 0, start_date: datetime = None,
 
     #### dictionary
     elif isinstance(element, dict):
-
+        params_copy = params.copy()
         result = {}
         for key in element.keys():
-            result[key] = mock_element(element[key], **params)
+            result[key] = mock_element(element[key], **params_copy)
 
     #### integer or float or boolean or None
     elif u.is_number(element) or isinstance(element, bool) or element is None:
@@ -128,6 +134,9 @@ def mock_element(element, counter: int = 0, start_date: datetime = None,
 
     else:
         result = str(element)
+
+    # params["person"] = Person.pl_random()
+    # params_copy = params.copy()
 
     return result
 
@@ -145,4 +154,5 @@ if __name__ == '__main__':
 
     model = u.read_json_file(model_path)
 
-    u.save_to_json(mock_element(model, counter=counter), output_path)
+    result = mock_element(model, counter=counter)
+    u.save_to_json(result, output_path)
