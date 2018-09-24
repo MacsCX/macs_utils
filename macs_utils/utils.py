@@ -190,6 +190,9 @@ def from_iso8601_to_datetime(dt: str):
 def from_datetime_to_iso8601(dt: datetime):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
+def pretty_dt_now():
+    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H-%M-%S")
+
 
 #### STRINGS
 
