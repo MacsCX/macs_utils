@@ -190,7 +190,9 @@ def from_iso8601_to_datetime(dt: str):
 def from_datetime_to_iso8601(dt: datetime):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
+
 def pretty_dt_now():
+    '''Return pretty datetime string'''
     return datetime.strftime(datetime.now(), "%Y-%m-%dT%H-%M-%S")
 
 
@@ -321,6 +323,7 @@ def get_dir_abs_path(file_name: str):
     :return:
     """
     return os.path.abspath(os.path.dirname(file_name))
+
 
 def prepare_kwargs(input_kwargs: dict, *keys):
     """
