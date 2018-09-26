@@ -137,15 +137,14 @@ def dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg
                                                                background_color)
 
 
-def long_string(args: object) -> str:
+def long_string(*args: object) -> str:
     """
     Return long string, (Lorem ipsum or other)
     :param args: file name (without '.txt'),
     :return:
     """
-
     string_name = random.choice(_string_names)
-
+    
     for x in args:
         if x in _string_names:
             string_name = x
