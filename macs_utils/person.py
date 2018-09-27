@@ -1,5 +1,5 @@
-from utils import *
-import mock
+from macs_utils import utils as u
+from macs_utils import mock
 import os, random
 
 
@@ -14,12 +14,12 @@ def create_pl_female_surname(first_surname: str = "", second_surname: str = ""):
     if first_surname == "":
         while first_surname == second_surname:
             first_surname = random.choice(mock.pl_surnames)
-            if true_or_false(false_weight=3):
+            if u.true_or_false(false_weight=3):
                 second_surname = random.choice(mock.pl_surnames)
 
     def feminize(surname):
         if surname[-1:] == "i":
-            surname = replace_char(surname, -1, "a")
+            surname = u.replace_char(surname, -1, "a")
 
         return surname
 
@@ -60,7 +60,7 @@ class Person():
     @classmethod
     # TODO test and finish
     def pl_random(cls, is_male: bool = None):
-        is_male = is_male or true_or_false()
+        is_male = is_male or u.true_or_false()
 
         name = random.choice(mock.pl_male_names) if is_male else random.choice(mock.pl_female_names)
         surname = random.choice(mock.pl_surnames) if is_male else create_pl_female_surname()

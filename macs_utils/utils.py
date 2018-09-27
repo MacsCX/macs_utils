@@ -138,8 +138,8 @@ def save_to_json(dictionary: dict, output_path: str):
     :param dictionary:
     :param output_path:
     """
-    with open(output_path, "w") as file:
-        json.dump(dictionary, file, indent=2)
+    with open(output_path, "w", encoding="utf-8") as file:
+        json.dump(dictionary, file, indent=2, ensure_ascii=False)
 
 
 #### DATES & TIME
@@ -189,6 +189,11 @@ def from_iso8601_to_datetime(dt: str):
 
 def from_datetime_to_iso8601(dt: datetime):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
+
+
+def pretty_dt_now():
+    '''Return pretty datetime string'''
+    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H-%M-%S")
 
 
 #### STRINGS
@@ -318,3 +323,17 @@ def get_dir_abs_path(file_name: str):
     :return:
     """
     return os.path.abspath(os.path.dirname(file_name))
+
+
+def prepare_kwargs(input_kwargs: dict, *keys):
+    """
+    Prepare keywoard arguments for method.
+    Example: if 'foo' key providen in '*keys'is missing in input_kwargs, then input_kwargs[foo]=None
+    :param input_kwargs:
+    :param keys:
+    :return:
+    """
+    for arg in keys:
+        input_kwargs[arg] = input_kwargs[arg] if arg in input_kwargs.keys() else None
+
+    return input_kwargs
