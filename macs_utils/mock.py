@@ -107,6 +107,9 @@ def robohash_avatar_url(width: int = 200, height: int = 200):
     """
     return "https://robohash.org/{0}.png?size{1}x{2}".format(randint(1, 100000), width, height)
 
+def picsum_url(width: int = 200, height: int = 200):
+
+    return f"https://picsum.photos/{width}/{height}"
 
 def avatar_url(size: int = 200):
     """
