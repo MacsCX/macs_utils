@@ -109,7 +109,7 @@ def robohash_avatar_url(width: int = 200, height: int = 200):
 
 def picsum_url(width: int = 200, height: int = 200):
 
-    return f"https://picsum.photos/{width}/{height}"
+    return f"https://picsum.photos/{width}/{height}/?random"
 
 def avatar_url(size: int = 200):
     """
