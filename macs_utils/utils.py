@@ -5,6 +5,7 @@ import json
 import os
 import random
 import re
+import pyqrcode
 from random import randint
 from datetime import datetime
 
@@ -337,3 +338,12 @@ def prepare_kwargs(input_kwargs: dict, *keys):
         input_kwargs[arg] = input_kwargs[arg] if arg in input_kwargs.keys() else None
 
     return input_kwargs
+
+def create_qr_image(code: str, output_path: str, scale:int = 6):
+    """
+    Generate QR code and save to file
+    """
+    qr_code = pyqrcode.create(code, mode="binary")
+    qr_code.png(output_path, scale=scale)
+
+    
