@@ -2,6 +2,7 @@
 This module contains useful methods. Enjoy!
 """
 import json
+import yaml
 import os
 import random
 import re
@@ -142,6 +143,17 @@ def save_to_json(dictionary: dict, output_path: str):
     with open(output_path, "w", encoding="utf-8") as file:
         json.dump(dictionary, file, indent=2, ensure_ascii=False)
 
+
+#### YAML
+def read_yaml(file_path: str):
+    with open(file_path, 'r') as file:
+        data = yaml.load(file)
+
+    return data
+
+def save_to_yaml(obj: object, output_path: str):
+    with open(output_path, 'w') as file:
+        data = yaml.dump(obj, file, default_flow_style=False)
 
 #### DATES & TIME
 
