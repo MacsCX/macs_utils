@@ -78,6 +78,8 @@ def pl_car_plate():
                                         chr(randint(65, 90)),
                                         chr(randint(65, 90))
                                         )
+
+
 def nickname():
     """create random nickname using EN colors and animal names"""
     color = random.choice(en_color_names)
@@ -87,6 +89,7 @@ def nickname():
         return f"{color.capitalize()}{animal.capitalize()}{randint(0,100)}"
     else:
         return f"{color}_{animal}{randint(0,100)}"
+
 
 def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     """
@@ -107,9 +110,15 @@ def robohash_avatar_url(width: int = 200, height: int = 200):
     """
     return "https://robohash.org/{0}.png?size{1}x{2}".format(randint(1, 100000), width, height)
 
-def picsum_url(width: int = 200, height: int = 200):
 
-    return f"https://picsum.photos/{width}/{height}/?random"
+def picsum_url(width: int = 200, height: int = 200, is_random: bool = True):
+    url = f"https://picsum.photos/{width}/{height}"
+
+    if is_random:
+        url += "/?random"
+
+    return url
+
 
 def avatar_url(size: int = 200):
     """
@@ -147,7 +156,7 @@ def long_string(*args: object) -> str:
     :return:
     """
     string_name = random.choice(_string_names)
-    
+
     for x in args:
         if x in _string_names:
             string_name = x

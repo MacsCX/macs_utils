@@ -2,9 +2,11 @@
 This module contains useful methods. Enjoy!
 """
 import json
+import yaml
 import os
 import random
 import re
+import pyqrcode
 from random import randint
 from datetime import datetime
 
@@ -141,6 +143,17 @@ def save_to_json(dictionary: dict, output_path: str):
     with open(output_path, "w", encoding="utf-8") as file:
         json.dump(dictionary, file, indent=2, ensure_ascii=False)
 
+
+#### YAML
+def read_yaml(file_path: str):
+    with open(file_path, 'r') as file:
+        data = yaml.load(file)
+
+    return data
+
+def save_to_yaml(obj: object, output_path: str):
+    with open(output_path, 'w') as file:
+        data = yaml.dump(obj, file, default_flow_style=False)
 
 #### DATES & TIME
 
@@ -337,3 +350,12 @@ def prepare_kwargs(input_kwargs: dict, *keys):
         input_kwargs[arg] = input_kwargs[arg] if arg in input_kwargs.keys() else None
 
     return input_kwargs
+
+def create_qr_image(code: str, output_path: str, scale:int = 6):
+    """
+    Generate QR code and save to file
+    """
+    qr_code = pyqrcode.create(code, mode="binary")
+    qr_code.png(output_path, scale=scale)
+
+    
