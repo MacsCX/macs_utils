@@ -147,7 +147,7 @@ def save_to_json(dictionary: dict, output_path: str):
 #### YAML
 def read_yaml(file_path: str):
     with open(file_path, 'r') as file:
-        data = yaml.load(file)
+        data = yaml.safe_load(file)
 
     return data
 
