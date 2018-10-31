@@ -9,6 +9,9 @@ import re
 import pyqrcode
 from random import randint
 from datetime import datetime
+import requests
+from requests import Response
+from time import sleep
 
 polish_chars = {"ą": "a",
                 "ć": "c",
@@ -151,9 +154,11 @@ def read_yaml(file_path: str):
 
     return data
 
+
 def save_to_yaml(obj: object, output_path: str):
     with open(output_path, 'w') as file:
         data = yaml.dump(obj, file, default_flow_style=False)
+
 
 #### DATES & TIME
 
@@ -351,11 +356,35 @@ def prepare_kwargs(input_kwargs: dict, *keys):
 
     return input_kwargs
 
-def create_qr_image(code: str, output_path: str, scale:int = 6):
+
+def create_qr_image(code: str, output_path: str, scale: int = 6):
     """
     Generate QR code and save to file
     """
     qr_code = pyqrcode.create(code, mode="binary")
     qr_code.png(output_path, scale=scale)
+   
+   
+def request(method, url, repeats, sleep_secs, condition, **kwargs):
+    """
+    Send request and repeat if condition is fullfilled.
+    It's enhancement of request method from requests lib.
 
-    
+    :param method: get/post/put/... etc.
+    :param url:
+    :param repeats: how many times request should be repeated to fulfill contition
+    :param sleep_secs: wait between iterations
+    :param condition: boolean method
+    :param kwargs: same as for
+    :return: response
+    """
+    for repeat in range(repeats):
+        req: Response = requests.request(method=method, url=url, **kwargs)
+
+        if condition(req):
+            return req
+
+        sleep(sleep_secs)
+
+
+    raise Exception('Condition failing:\nStatus code: {0}\nResponse:\n{1}'.format(req.status_code, req.content))
