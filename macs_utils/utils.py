@@ -292,6 +292,23 @@ def simplify_string(string: str):
     )
 
 
+#### SYSTEM
+
+def make_dir(dir_path: str):
+    """
+    Make new directory if it doesn't exist
+    """
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+
+def get_dir_abs_path(file_name: str):
+    """
+    Return absolute path to file's directory
+    """
+    return os.path.abspath(os.path.dirname(file_name))
+
+
 #### OTHER
 
 def true_or_false(true_weight: int = 1, false_weight: int = 1):
@@ -334,15 +351,6 @@ def create_random_subarray(array: list, exact_length: int = 0, min_length: int =
     return subarray
 
 
-def get_dir_abs_path(file_name: str):
-    """
-    Return absolute path to file's directory
-    :param file_name:
-    :return:
-    """
-    return os.path.abspath(os.path.dirname(file_name))
-
-
 def prepare_kwargs(input_kwargs: dict, *keys):
     """
     Prepare keywoard arguments for method.
@@ -363,9 +371,11 @@ def create_qr_image(code: str, output_path: str, scale: int = 6):
     """
     qr_code = pyqrcode.create(code, mode="binary")
     qr_code.png(output_path, scale=scale)
-   
-   
-def request(method, url, repeats, sleep_secs, condition, **kwargs):
+
+
+### REST API
+
+def request(method: str, url: str, condition_func, repeats=10, sleep_secs=1, **kwargs):
     """
     Send request and repeat if condition is fullfilled.
     It's enhancement of request method from requests lib.
@@ -374,17 +384,21 @@ def request(method, url, repeats, sleep_secs, condition, **kwargs):
     :param url:
     :param repeats: how many times request should be repeated to fulfill contition
     :param sleep_secs: wait between iterations
-    :param condition: boolean method
+    :param condition_func: boolean method
     :param kwargs: same as for
     :return: response
     """
     for repeat in range(repeats):
         req: Response = requests.request(method=method, url=url, **kwargs)
 
-        if condition(req):
+        if condition_func(req):
             return req
 
         sleep(sleep_secs)
 
+    error_msg = "Connection condition failed!"
+    error_msg += "\n%s: %s" % (method.upper(), req.url)
+    error_msg += "\nStatus code: %d" % req.status_code
+    error_msg += "\n" + str(req.content)
 
-    raise Exception('Condition failing:\nStatus code: {0}\nResponse:\n{1}'.format(req.status_code, req.content))
+    raise Exception(error_msg)
