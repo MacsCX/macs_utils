@@ -9,6 +9,9 @@ import re
 import pyqrcode
 from random import randint
 from datetime import datetime
+import requests
+from requests import Response
+from time import sleep
 
 polish_chars = {"ą": "a",
                 "ć": "c",
@@ -151,9 +154,11 @@ def read_yaml(file_path: str):
 
     return data
 
+
 def save_to_yaml(obj: object, output_path: str):
     with open(output_path, 'w') as file:
         data = yaml.dump(obj, file, default_flow_style=False)
+
 
 #### DATES & TIME
 
@@ -287,6 +292,23 @@ def simplify_string(string: str):
     )
 
 
+#### SYSTEM
+
+def make_dir(dir_path: str):
+    """
+    Make new directory if it doesn't exist
+    """
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+
+
+def get_dir_abs_path(file_name: str):
+    """
+    Return absolute path to file's directory
+    """
+    return os.path.abspath(os.path.dirname(file_name))
+
+
 #### OTHER
 
 def true_or_false(true_weight: int = 1, false_weight: int = 1):
@@ -329,15 +351,6 @@ def create_random_subarray(array: list, exact_length: int = 0, min_length: int =
     return subarray
 
 
-def get_dir_abs_path(file_name: str):
-    """
-    Return absolute path to file's directory
-    :param file_name:
-    :return:
-    """
-    return os.path.abspath(os.path.dirname(file_name))
-
-
 def prepare_kwargs(input_kwargs: dict, *keys):
     """
     Prepare keywoard arguments for method.
@@ -351,11 +364,41 @@ def prepare_kwargs(input_kwargs: dict, *keys):
 
     return input_kwargs
 
-def create_qr_image(code: str, output_path: str, scale:int = 6):
+
+def create_qr_image(code: str, output_path: str, scale: int = 6):
     """
     Generate QR code and save to file
     """
     qr_code = pyqrcode.create(code, mode="binary")
     qr_code.png(output_path, scale=scale)
 
-    
+
+### REST API
+
+def request(method: str, url: str, condition_func, repeats=10, sleep_secs=1, **kwargs):
+    """
+    Send request and repeat if condition is fullfilled.
+    It's enhancement of request method from requests lib.
+
+    :param method: get/post/put/... etc.
+    :param url:
+    :param repeats: how many times request should be repeated to fulfill contition
+    :param sleep_secs: wait between iterations
+    :param condition_func: boolean method
+    :param kwargs: same as for
+    :return: response
+    """
+    for repeat in range(repeats):
+        req: Response = requests.request(method=method, url=url, **kwargs)
+
+        if condition_func(req):
+            return req
+
+        sleep(sleep_secs)
+
+    error_msg = "Connection condition failed!"
+    error_msg += "\n%s: %s" % (method.upper(), req.url)
+    error_msg += "\nStatus code: %d" % req.status_code
+    error_msg += "\n" + str(req.content)
+
+    raise Exception(error_msg)
