@@ -375,7 +375,7 @@ def create_qr_image(code: str, output_path: str, scale: int = 6):
 
 ### REST API
 
-def request(method: str, url: str, condition_func, repeats=10, sleep_secs=1, **kwargs):
+def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func = lambda x: x.ok, **kwargs):
     """
     Send request and repeat if condition is fullfilled.
     It's enhancement of request method from requests lib.
