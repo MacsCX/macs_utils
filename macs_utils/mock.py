@@ -37,17 +37,9 @@ company_name_suffixes = ["Solutions", "LTD", "Labs", "Inc.", "Company", "Sp. z o
                          "Dynamics", "Partners", "Holdings", "Development"]
 
 
-def email(name: str = None, surname: str = None,
-          domain: str = None):
-    """
-    Create email using name and surname. If data is empty, random pseudo will be used.
-    :param name:
-    :param surname:
-    :param domain: for example qooqle.com
-    :return: email, for example jan.kowalski85@qmail.com or blue.dog99@qmail.com
-    """
+def email(name: str = None, surname: str = None, domain: str = None):
+    """create email using name and surname. If data is empty, random pseudo will be used"""
 
-    # if name and surname are None, script create email with pseudo, f.e. "blue.dog12@qmail.com"
     name = name or random.choice(en_color_names)
     surname = surname or random.choice(en_animals)
 
@@ -61,7 +53,7 @@ def email(name: str = None, surname: str = None,
 
 
 def business_name():
-    """create random business name using technical terms """
+    """create random business name using technical terms"""
 
     return "%s %s" % (random.choice(tech_terms), random.choice(company_name_suffixes))
 
@@ -71,13 +63,10 @@ def pl_car_plate():
 
     car_plate_code = random.choice(pl_car_plate_codes)
 
-    return "{0} {1}{2}{3}{4}{5}".format(car_plate_code,
-                                        randint(0, 9),
-                                        randint(0, 9),
-                                        chr(randint(65, 90)),
-                                        chr(randint(65, 90)),
-                                        chr(randint(65, 90))
-                                        )
+    car_plate_string = str(randint(10, 99))
+    car_plate_string += "".join([chr(randint(65, 90)) for x in range(3)])
+
+    return "%s %s" % (car_plate_code, car_plate_string)
 
 
 def nickname():
