@@ -81,40 +81,27 @@ def nickname():
 
 
 def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
-    """
-    Get url of Adorable avatar (square random funny face)
-    :param size: size in px
-    :param file_format: jpg/png/gif
-    :return:
-    """
+    """get url of Adorable avatar (square random funny face)"""
     return "https://api.adorable.io/avatars/{0}/{1}.{2}".format(size, randint(1, 100000), file_format)
 
 
 def robohash_avatar_url(width: int = 200, height: int = 200):
-    """
-    Get url of Robohash PNG-only avatar (funny robot with alpha channel)
-    :param width: px
-    :param height: px
-    :return:
-    """
+    """get url of Robohash PNG-only avatar (funny robot with alpha channel)"""
     return "https://robohash.org/{0}.png?size{1}x{2}".format(randint(1, 100000), width, height)
 
 
 def picsum_url(width: int = 200, height: int = 200, is_random: bool = True):
+    """get url of Lorem Picsum image"""
     url = f"https://picsum.photos/{width}/{height}"
 
     if is_random:
-        url += "/?random"
+        url += "/?image=" + str(randint(1, 1084))
 
     return url
 
 
 def avatar_url(size: int = 200):
-    """
-    Return proper, improper or empty image url
-    :param size: px
-    :return:
-    """
+    """return proper, improper or empty image url"""
     return random.choice([adorable_avatar_url(size),
                           robohash_avatar_url(size, size),
                           "https://invalid.url.cs",
@@ -122,13 +109,7 @@ def avatar_url(size: int = 200):
 
 
 def dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg"):
-    """
-    Get url to simple rectangular image
-    :param width: px
-    :param height: px
-    :param file_format: jpg/png/git/bmp
-    :return:
-    """
+    """get url to simple rectangular jpg/png/git/bmp image"""
     font_color = "".join([hex(randint(0, 255))[2:] for _ in range(3)])
     background_color = "".join([hex(randint(0, 255))[2:] for _ in range(3)])
     return "https://dummyimage.com/{0}x{1}.{2}/{3}/{4}".format(width,
@@ -140,7 +121,7 @@ def dummy_image_url(width: int = 200, height: int = 200, file_format: str = "jpg
 
 def long_string(*args: object) -> str:
     """
-    Return long string, (Lorem ipsum or other)
+    return long string, (Lorem ipsum or other)
     :param args: file name (without '.txt'),
     :return:
     """
