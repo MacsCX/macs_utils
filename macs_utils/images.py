@@ -1,4 +1,6 @@
 from PIL import Image, ImageDraw, ImageChops
+from io import BytesIO
+import base64
 import sys
 import os
 import math
@@ -70,3 +72,8 @@ def arrange_images_horizontally(images: list, descriptions: list = [], desc_row_
         iterated_x += images[m].size[0] + dilatation
 
     return result
+
+def base64_to_image(data):
+    return Image.open(BytesIO(base64.b64decode(data)))
+
+
