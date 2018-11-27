@@ -48,23 +48,23 @@ def scroll_by(driver: RemoteWebDriver, x: int, y: int):
     driver.execute_script(f"window.scrollBy({x}, {y})")
 
 
-def scroll_to_element(driver: RemoteWebDriver, element: WebElement, x_margin: int = 0, y_margin=0):
-    screen_width, screen_height = get_screen_size(driver)
-    # TODO implement this method for element's larger/wider than screen
-
-    set_right_bottom_corner(element)
-
-    if element.right_bottom_corner["x"] + 2 * x_margin > screen_width:
-        scroll_x = element.right_bottom_corner["x"] + x_margin - screen_width
-    else:
-        scroll_x = 0
-
-    if element.right_bottom_corner["y"] + 2 * y_margin > screen_height:
-        scroll_y = element.right_bottom_corner["y"] + y_margin - screen_height
-    else:
-        scroll_y = 0
-
-    scroll_to(driver, scroll_x, scroll_y)
+# def scroll_to_element(driver: RemoteWebDriver, element: WebElement, x_margin: int = 0, y_margin=0):
+#     screen_width, screen_height = get_screen_size(driver)
+#     # TODO implement this method for element's larger/wider than screen
+#
+#     set_right_bottom_corner(element)
+#
+#     if element.right_bottom_corner["x"] + 2 * x_margin > screen_width:
+#         scroll_x = element.right_bottom_corner["x"] + x_margin - screen_width
+#     else:
+#         scroll_x = 0
+#
+#     if element.right_bottom_corner["y"] + 2 * y_margin > screen_height:
+#         scroll_y = element.right_bottom_corner["y"] + y_margin - screen_height
+#     else:
+#         scroll_y = 0
+#
+#     scroll_to(driver, scroll_x, scroll_y)
 
 
 def take_partial_screenshot(driver: RemoteWebDriver, x1: int, y1: int, x2: int, y2: int) -> Image:
@@ -72,17 +72,17 @@ def take_partial_screenshot(driver: RemoteWebDriver, x1: int, y1: int, x2: int, 
     return screen.crop((x1, y1, x2, y2))
 
 
-def take_element_screenshot(driver: RemoteWebDriver, element: WebElement, output_path: str, x_margin: int = 0,
+def take_element_screenshot(driver: RemoteWebDriver, element: WebElement, x_margin: int = 0,
                             y_margin: int = 0, scroll_x: int = 0, scroll_y: int = 0):
 
-    ActionChains(driver).move_to_element(element).perform()
-
-
-    sleep(2)
+    # ActionChains(driver).move_to_element(element).perform()
+    #
+    #
+    # sleep(2)
     x1 = element.location_once_scrolled_into_view["x"] - x_margin
     y1 = element.location_once_scrolled_into_view["y"] - y_margin
 
     x2 = element.location_once_scrolled_into_view["x"] + element.size["width"] + x_margin
     y2 = element.location_once_scrolled_into_view["y"] + element.size["height"] + y_margin
 
-    take_partial_screenshot(driver, x1, y1, x2, y2)
+    return take_partial_screenshot(driver, x1, y1, x2, y2)
