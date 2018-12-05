@@ -73,7 +73,7 @@ def arrange_images_horizontally(images: list, descriptions: list = [], desc_row_
 
     return result
 
-def base64_to_image(data):
+def base64_to_image(data) -> Image:
     return Image.open(BytesIO(base64.b64decode(data)))
 
 

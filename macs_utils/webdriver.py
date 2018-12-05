@@ -9,18 +9,23 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 
+
 # GENERAL
 def set_env_path(drivers_path: str):
     os.environ["PATH"] += ":" + drivers_path
 
+
 # WEBDRIVER
-# TODO add window size calibration and JSON with offsets
+
+def capture_screenshot(driver: RemoteWebDriver) -> Image:
+    return im.base64_to_image(driver.get_screenshot_as_base64())
+
 
 def window_size_with_added_offsets(browser: str, screen_target_width: int, screen_target_height: int,
-                                   add_to_width: int = 0, add_to_height: int = 0):
+                                   add_to_width: int = 0, add_to_height: int = 0, offsets: dict = None):
     return (
-        screen_target_width + offsets[browser]["widthOffsetToAdd"] + add_to_width,
-        screen_target_height + offsets[browser]["heightOffsetToAdd"] + add_to_height
+        screen_target_width + offsets[browser]['1366x768']["widthOffsetToAdd"] + add_to_width,
+        screen_target_height + offsets[browser]['1366x768']["heightOffsetToAdd"] + add_to_height
     )
 
 
@@ -43,6 +48,7 @@ def get_screen_size(driver: RemoteWebDriver):
 # TODO make scroll, scrollTo, scrollBy
 def scroll_to(driver: RemoteWebDriver, x: int, y: int):
     driver.execute_script(f"window.scrollTo({x}, {y})")
+
 
 def scroll_by(driver: RemoteWebDriver, x: int, y: int):
     driver.execute_script(f"window.scrollBy({x}, {y})")
@@ -68,13 +74,12 @@ def scroll_by(driver: RemoteWebDriver, x: int, y: int):
 
 
 def take_partial_screenshot(driver: RemoteWebDriver, x1: int, y1: int, x2: int, y2: int) -> Image:
-    screen = im.base64_to_image(driver.get_screenshot_as_base64())
+    screen = capture_screenshot(driver)
     return screen.crop((x1, y1, x2, y2))
 
 
 def take_element_screenshot(driver: RemoteWebDriver, element: WebElement, x_margin: int = 0,
                             y_margin: int = 0, scroll_x: int = 0, scroll_y: int = 0):
-
     # ActionChains(driver).move_to_element(element).perform()
     #
     #
