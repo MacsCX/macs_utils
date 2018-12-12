@@ -82,7 +82,7 @@ def nickname():
 
 def adorable_avatar_url(size: int = 200, file_format: str = "jpg"):
     """get url of Adorable avatar (square random funny face)"""
-    return "https://api.adorable.io/avatars/{0}/{1}.{2}".format(size, randint(1, 100000), file_format)
+    return "https://api.adorable.io/avatars/{0}/{1}.{2}".format(size, randint(1, 1000000000), file_format)
 
 
 def robohash_avatar_url(width: int = 200, height: int = 200):
