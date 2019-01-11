@@ -211,7 +211,7 @@ def from_datetime_to_iso8601(dt: datetime):
 
 def pretty_dt_now():
     '''Return pretty datetime string'''
-    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H-%M-%S")
+    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M:%S")
 
 
 #### STRINGS
