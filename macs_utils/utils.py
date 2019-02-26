@@ -209,9 +209,11 @@ def from_datetime_to_iso8601(dt: datetime):
     return dt.strftime("%Y-%m-%dT%H:%M:%S.%f%z")
 
 
+pretty_time_format = '%Y-%m-%dT%H:%M:%S'
+
 def pretty_dt_now():
     '''Return pretty datetime string'''
-    return datetime.strftime(datetime.now(), "%Y-%m-%dT%H:%M:%S")
+    return datetime.strftime(datetime.now(), pretty_time_format)
 
 
 #### STRINGS
@@ -375,7 +377,7 @@ def create_qr_image(code: str, output_path: str, scale: int = 6):
 
 ### REST API
 
-def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func = lambda x: x.ok, **kwargs):
+def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func=lambda x: x.ok, **kwargs):
     """
     Send request and repeat if condition is fullfilled.
     It's enhancement of request method from requests lib.

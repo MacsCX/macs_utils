@@ -10,6 +10,17 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 
 
+def driver_init(browser: str = "chrome", *args, **kwargs) -> RemoteWebDriver:
+    if browser.lower() == "chrome":
+        return webdriver.Chrome(*args, **kwargs)
+    elif browser.lower() == "firefox":
+        return webdriver.Firefox(*args, **kwargs)
+    elif browser.lower() == "safari":
+        return webdriver.Safari(*args, **kwargs)
+    elif browser.lower() == "edge":
+        return webdriver.Edge(*args, **kwargs)
+    else:
+        raise ValueError("Wrong browser! Available browsers: chrome, firefox, safari, edge")
 # GENERAL
 def set_env_path(drivers_path: str):
     os.environ["PATH"] += ":" + drivers_path

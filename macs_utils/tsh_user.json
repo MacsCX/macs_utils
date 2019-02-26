@@ -1,0 +1,19 @@
+{
+  "id": 4,
+  "firstName": "Miquido",
+  "lastName": "Tester",
+  "email": "miquido.tester@gmail.com",
+  "avatarUrl": "https://timesheets-api-stage.quidlo.com/api/v1/images/users/150x150/11389487aa928bfe2a513e846638b6e1cffb144f14ccf9b815e78b3d60ad7e7f.png",
+  "organizations": [
+    {"$repeat": 30},
+    {
+      "name": "$random.choice(mock.pl_cities) + ' ' + str(random.randint(100, 10000))",
+      "code": "$'krk'+str(random.randint(100, 10000))",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "$mock.avatar_url()"
+    }
+  ],
+  "hasPassword": true,
+  "isActive": false
+}

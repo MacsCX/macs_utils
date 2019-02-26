@@ -1,0 +1,221 @@
+{
+  "id": 4,
+  "firstName": "Miquido",
+  "lastName": "Tester",
+  "email": "miquido.tester@gmail.com",
+  "avatarUrl": "https://timesheets-api-stage.quidlo.com/api/v1/images/users/150x150/11389487aa928bfe2a513e846638b6e1cffb144f14ccf9b815e78b3d60ad7e7f.png",
+  "organizations": [
+    {
+      "name": "Imielin 5059",
+      "code": "krk2387",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/44911.jpg"
+    },
+    {
+      "name": "Stoczek Łukowski 3297",
+      "code": "krk3188",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/41702.jpg"
+    },
+    {
+      "name": "Alwernia 5508",
+      "code": "krk1144",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Gorlice 881",
+      "code": "krk3291",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": ""
+    },
+    {
+      "name": "Drezdenko 1271",
+      "code": "krk2615",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": ""
+    },
+    {
+      "name": "Biała Rawska 1900",
+      "code": "krk5793",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Polanica-Zdrój 2553",
+      "code": "krk952",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Rydzyna 6415",
+      "code": "krk6655",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://robohash.org/73810.png?size200x200"
+    },
+    {
+      "name": "Ulanów 3370",
+      "code": "krk1269",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": ""
+    },
+    {
+      "name": "Rydzyna 8776",
+      "code": "krk3370",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Stronie Śląskie 5275",
+      "code": "krk5152",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/16665.jpg"
+    },
+    {
+      "name": "Starogard Gdański 1321",
+      "code": "krk1873",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Alwernia 9118",
+      "code": "krk8675",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/91024.jpg"
+    },
+    {
+      "name": "Kowalewo Pomorskie 917",
+      "code": "krk1710",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": ""
+    },
+    {
+      "name": "Czerniejewo 7055",
+      "code": "krk1110",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/97774.jpg"
+    },
+    {
+      "name": "Chełmża 6323",
+      "code": "krk2818",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/57137.jpg"
+    },
+    {
+      "name": "Sztum 5132",
+      "code": "krk9353",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://robohash.org/58032.png?size200x200"
+    },
+    {
+      "name": "Nowy Targ 5288",
+      "code": "krk723",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://robohash.org/66132.png?size200x200"
+    },
+    {
+      "name": "Międzychód 3824",
+      "code": "krk2490",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://robohash.org/48949.png?size200x200"
+    },
+    {
+      "name": "Zalewo 9071",
+      "code": "krk9895",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://robohash.org/67775.png?size200x200"
+    },
+    {
+      "name": "Drawsko Pomorskie 5431",
+      "code": "krk1684",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Miłakowo 1776",
+      "code": "krk4676",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/80859.jpg"
+    },
+    {
+      "name": "Pakość 6376",
+      "code": "krk1902",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://robohash.org/75337.png?size200x200"
+    },
+    {
+      "name": "Cieszyn 7128",
+      "code": "krk7769",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Opole Lubelskie 9362",
+      "code": "krk2882",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/23843.jpg"
+    },
+    {
+      "name": "Szczyrk 8236",
+      "code": "krk4060",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Tyczyn 7494",
+      "code": "krk8609",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": "https://invalid.url.cs"
+    },
+    {
+      "name": "Dobre Miasto 4025",
+      "code": "krk8459",
+      "organizationRole": "admin",
+      "status": "approved",
+      "logo": ""
+    },
+    {
+      "name": "Zalewo 9105",
+      "code": "krk8510",
+      "organizationRole": "employee",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/57415.jpg"
+    },
+    {
+      "name": "Błaszki 6857",
+      "code": "krk3290",
+      "organizationRole": "owner",
+      "status": "approved",
+      "logo": "https://api.adorable.io/avatars/200/78570.jpg"
+    }
+  ],
+  "hasPassword": true,
+  "isActive": false
+}
