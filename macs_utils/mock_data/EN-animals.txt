@@ -7,7 +7,6 @@ anteater
 antelope
 ape
 armadillo
-ass/donkey
 baboon
 badger
 barracuda
@@ -167,7 +166,6 @@ termite
 tiger
 toad
 turtle
-vicuña
 wallaby
 walrus
 wasp
