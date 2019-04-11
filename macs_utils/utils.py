@@ -211,6 +211,7 @@ def from_datetime_to_iso8601(dt: datetime):
 
 pretty_time_format = '%Y-%m-%dT%H:%M:%S'
 
+
 def pretty_dt_now():
     '''Return pretty datetime string'''
     return datetime.strftime(datetime.now(), pretty_time_format)
@@ -377,7 +378,8 @@ def create_qr_image(code: str, output_path: str, scale: int = 6):
 
 ### REST API
 
-def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func=lambda x: x.ok, **kwargs):
+def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func=lambda x: x.ok,
+            save_error_logs: bool = False, error_logs_path: str = ".", **kwargs):
     """
     Send request and repeat if condition is fullfilled.
     It's enhancement of request method from requests lib.
@@ -398,9 +400,25 @@ def request(method: str, url: str, repeats=10, sleep_secs=1, condition_func=lamb
 
         sleep(sleep_secs)
 
+    if save_error_logs == True:
+        dt = pretty_dt_now()
+        error_logs_path = os.path.abspath(error_logs_path)
+
+        if "json" in kwargs.keys():
+            log_filepath = f"errorLog_request_{dt}.json"
+            log_filepath = os.path.join(error_logs_path, log_filepath)
+            save_to_json(kwargs['json'], log_filepath)
+
+        log_filepath = f"errorLog_response_{req.status_code}_{dt}.json"
+        log_filepath = os.path.join(error_logs_path, log_filepath)
+        save_to_json(req.json(), log_filepath)
+
     error_msg = "Connection condition failed!"
     error_msg += "\n%s: %s" % (method.upper(), req.url)
     error_msg += "\nStatus code: %d" % req.status_code
     error_msg += "\n" + str(req.content)
+
+    if save_error_logs == True:
+        error_msg += f"\nError logs saved to dir: {error_logs_path}"
 
     raise Exception(error_msg)
