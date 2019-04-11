@@ -46,7 +46,8 @@ def arrange_images_vertically(images: list, descriptions: list = [], desc_row_he
         image_y = iterated_y + desc_row_height
         text_y = iterated_y + int(desc_row_height / 2) - 5
 
-        draw.text(text=descriptions[m], xy=(10, text_y), fill=desc_color)
+        text_to_draw = descriptions[m] if len(descriptions) >= m + 1 else ""
+        draw.text(text=text_to_draw, xy=(10, text_y), fill=desc_color)
         result.paste(images[m], (0, image_y))
 
         iterated_y += images[m].size[1] + desc_row_height
