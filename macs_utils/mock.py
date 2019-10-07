@@ -22,6 +22,8 @@ def _read_mock_txt(file_name: str) -> list:
 
 en_color_names = _read_mock_txt("EN-color_names.txt")
 en_animals = _read_mock_txt("EN-animals.txt")
+en_male_names = _read_mock_txt("EN-male_names.txt")
+en_surnames = _read_mock_txt("EN-surnames.txt")
 pl_male_names = _read_mock_txt("PL-male_names.txt")
 pl_female_names = _read_mock_txt("PL-female_names.txt")
 pl_surnames = _read_mock_txt("PL-surnames.txt")

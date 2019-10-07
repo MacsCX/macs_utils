@@ -66,3 +66,9 @@ class Person():
         surname = random.choice(mock.pl_surnames) if is_male else create_pl_female_surname()
         return Person(name, surname)
 
+    @classmethod
+    def en_random(cls):
+        name =random.choice(mock.en_male_names)
+        surname = random.choice(mock.en_surnames)
+        return Person(name, surname)
+
